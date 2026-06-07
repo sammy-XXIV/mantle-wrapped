@@ -1,0 +1,2733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mantle Wrapped — Get Roasted</title>
+
+<!-- Open Graph -->
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://sammy-xxiv.github.io/Mantle-wrapped/" />
+<meta property="og:title" content="Mantle Wrapped — Get Roasted" />
+<meta property="og:description" content="AI analyzes your Mantle wallet and publicly destroys you. Connect, get roasted, mint the evidence." />
+<meta property="og:image" content="https://sammy-xxiv.github.io/Mantle-wrapped/og.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+
+<!-- Twitter / X -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Mantle Wrapped — Get Roasted" />
+<meta name="twitter:description" content="AI analyzes your Mantle wallet and publicly destroys you. Connect, get roasted, mint the evidence." />
+<meta name="twitter:image" content="https://sammy-xxiv.github.io/Mantle-wrapped/og.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@300;400;500&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after {
+    margin: 0; padding: 0; box-sizing: border-box;
+  }
+
+  :root {
+    --green: #00D395;
+    --green-bright: #00FFB2;
+    --green-dim: #00A371;
+    --black: #060808;
+    --surface: #0e1210;
+    --surface-2: #141a16;
+    --border: rgba(0, 211, 149, 0.12);
+    --border-bright: rgba(0, 211, 149, 0.35);
+    --text: #FFFFFF;
+    --text-muted: #6B7280;
+    --text-dim: #2D3748;
+    --font-display: 'Syne', sans-serif;
+    --font-bebas: 'Bebas Neue', sans-serif;
+    --font-mono: 'DM Mono', monospace;
+    --glass: rgba(255,255,255,0.06);
+    --glass-2: rgba(255,255,255,0.09);
+    --glass-3: rgba(255,255,255,0.12);
+    --glass-border: rgba(255,255,255,0.12);
+    --glass-shine: inset 0 1px 0 rgba(255,255,255,0.13);
+    --glow-green: 0 0 32px rgba(0,211,149,0.18);
+    --glow-green-lg: 0 0 56px rgba(0,211,149,0.25);
+    --ease: cubic-bezier(0.25,0.1,0.25,1);
+    --ease-spring: cubic-bezier(0.22,1,0.36,1);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--text);
+    font-family: var(--font-display);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ─── BG VIDEO ─── */
+  .bg-video-wrap {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .bg-video-wrap video {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    opacity: 0.18;
+    filter: saturate(1.6) brightness(0.85);
+    will-change: transform;
+  }
+
+  .bg-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    background:
+      radial-gradient(ellipse 90% 70% at 50% 40%, transparent 0%, rgba(6,8,8,0.55) 55%, rgba(6,8,8,0.97) 100%),
+      linear-gradient(180deg, rgba(9,9,9,0.35) 0%, rgba(9,9,9,0.82) 60%, rgba(9,9,9,1) 100%);
+    pointer-events: none;
+  }
+
+  /* ─── PARTICLES ─── */
+  .particles {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .particle {
+    position: absolute;
+    border-radius: 50%;
+    animation: particleFloat linear infinite;
+    will-change: transform, opacity;
+  }
+
+  @keyframes particleFloat {
+    0%   { transform: translateY(0) translateX(0); opacity: 0; }
+    8%   { opacity: 1; }
+    92%  { opacity: 0.7; }
+    100% { transform: translateY(-110vh) translateX(var(--drift, 0px)); opacity: 0; }
+  }
+
+  /* ─── PAGES ─── */
+  .page {
+    position: relative;
+    z-index: 2;
+    min-height: 100vh;
+    display: none;
+    flex-direction: column;
+  }
+  .page.active { display: flex; }
+
+  /* ─── LANDING ─── */
+  #landing {
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px 24px;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  .landing-glow {
+    position: absolute;
+    width: 900px;
+    height: 900px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,211,149,0.09) 0%, rgba(0,211,149,0.03) 45%, transparent 70%);
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -55%);
+    pointer-events: none;
+    animation: glowBreath 6s ease-in-out infinite;
+  }
+
+  @keyframes glowBreath {
+    0%, 100% { opacity: 0.8; transform: translate(-50%, -55%) scale(1); }
+    50%       { opacity: 1;   transform: translate(-50%, -55%) scale(1.12); }
+  }
+
+  .landing-inner {
+    max-width: 720px;
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  /* ─── HERO SAVAGE LINE ─── */
+  .hero-savage {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: 0.18em;
+    color: var(--green);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    opacity: 0;
+    transform: translateY(10px);
+    animation: fadeUp 0.6s var(--ease-spring) 0.55s forwards;
+  }
+
+  /* ─── ROAST QUOTE CARDS ─── */
+  .roast-feed {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 32px auto 40px;
+    max-width: 600px;
+    text-align: left;
+    opacity: 0;
+    transform: translateY(14px);
+    animation: fadeUp 0.7s var(--ease-spring) 0.7s forwards;
+  }
+
+  .roast-quote {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 14px 18px;
+    border: 1px solid rgba(0,211,149,0.15);
+    border-left: 2px solid var(--green);
+    border-radius: 6px;
+    background: rgba(0,211,149,0.04);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), 0 0 20px rgba(0,211,149,0.04);
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.25s, box-shadow 0.25s, background 0.25s;
+  }
+
+  .roast-quote:hover {
+    border-color: rgba(0,211,149,0.4);
+    border-left-color: var(--green-bright);
+    background: rgba(0,211,149,0.07);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.07), 0 0 28px rgba(0,211,149,0.1);
+  }
+
+  .roast-quote::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(0,211,149,0.06) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .roast-addr {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: rgba(0,211,149,0.55);
+    letter-spacing: 0.12em;
+  }
+
+  .roast-text {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: rgba(255,255,255,0.82);
+    line-height: 1.6;
+    font-style: italic;
+  }
+
+  .roast-quote:nth-child(2) { animation-delay: 0.05s; }
+  .roast-quote:nth-child(3) { animation-delay: 0.1s; }
+
+  /* scan sweep animation on cards */
+  @keyframes scanLine {
+    0%   { transform: translateX(-100%); }
+    100% { transform: translateX(400%); }
+  }
+
+  .roast-quote::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 25%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0,211,149,0.06), transparent);
+    animation: scanLine 4s ease-in-out infinite;
+  }
+  .roast-quote:nth-child(2)::after { animation-delay: 1.3s; }
+  .roast-quote:nth-child(3)::after { animation-delay: 2.6s; }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 16px;
+    border: 1px solid var(--glass-border);
+    border-radius: 100px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    color: rgba(255,255,255,0.7);
+    text-transform: uppercase;
+    margin-bottom: 48px;
+    background: var(--glass-2);
+    backdrop-filter: blur(36px);
+    -webkit-backdrop-filter: blur(36px);
+    box-shadow: var(--glass-shine), 0 4px 20px rgba(0,0,0,0.25), 0 0 0 1px rgba(0,211,149,0.06);
+    opacity: 0;
+    transform: translateY(12px);
+    animation: fadeUp 0.6s var(--ease-spring) 0.1s forwards;
+  }
+
+  .badge-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 6px rgba(0,211,149,0.9), 0 0 14px rgba(0,211,149,0.45);
+    animation: pulse 2.5s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.3; transform: scale(0.6); }
+  }
+
+  .hero-title {
+    font-family: var(--font-bebas);
+    font-size: clamp(56px, 17vw, 130px);
+    font-weight: 400;
+    line-height: 0.88;
+    letter-spacing: 0.04em;
+    margin-bottom: 28px;
+    opacity: 0;
+    transform: translateY(16px);
+    animation: fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.2s forwards;
+  }
+
+  .hero-title .word-mantle { color: var(--text); }
+  .hero-title .word-wrapped {
+    color: var(--green);
+    position: relative;
+    display: inline-block;
+  }
+
+  .hero-title .word-wrapped::after {
+    content: '';
+    position: absolute;
+    bottom: -4px; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--green), transparent);
+  }
+
+  .hero-sub {
+    font-family: var(--font-mono);
+    font-size: 15px;
+    color: var(--text-muted);
+    line-height: 1.7;
+    max-width: 480px;
+    margin: 0 auto 56px;
+    opacity: 0;
+    transform: translateY(12px);
+    animation: fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.35s forwards;
+  }
+
+  @keyframes shimmer {
+    0% { background-position: -200% center; }
+    100% { background-position: 200% center; }
+  }
+
+  .connect-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 18px 44px;
+    background: linear-gradient(90deg, var(--green) 0%, var(--green-bright) 50%, var(--green) 100%);
+    background-size: 200% auto;
+    color: #000;
+    font-family: var(--font-bebas);
+    font-size: 20px;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    border: 1px solid rgba(255,255,255,0.28);
+    border-radius: 8px;
+    cursor: pointer;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow:
+      0 0 32px rgba(0,211,149,0.42),
+      0 0 80px rgba(0,211,149,0.16),
+      inset 0 1px 0 rgba(255,255,255,0.32),
+      0 8px 32px rgba(0,0,0,0.3);
+    transition: transform 0.2s var(--ease), box-shadow 0.2s var(--ease);
+    opacity: 0;
+    transform: translateY(12px);
+    animation: fadeUp 0.7s var(--ease-spring) 0.5s forwards, shimmer 3s linear 1.5s infinite;
+    will-change: transform;
+  }
+
+  .connect-btn:hover {
+    transform: translateY(-3px);
+    box-shadow:
+      0 0 52px rgba(0,211,149,0.6),
+      0 0 110px rgba(0,211,149,0.28),
+      inset 0 1px 0 rgba(255,255,255,0.32),
+      0 16px 48px rgba(0,0,0,0.4);
+  }
+  .connect-btn:active { transform: translateY(0); }
+
+  .connect-btn .btn-arrow {
+    transition: transform 0.15s;
+  }
+  .connect-btn:hover .btn-arrow { transform: translateX(4px); }
+
+  .stats-preview {
+    display: flex;
+    gap: 12px;
+    margin-top: 72px;
+    opacity: 0;
+    transform: translateY(16px);
+    animation: fadeUp 0.8s var(--ease-spring) 0.65s forwards;
+  }
+
+  .stat-block {
+    flex: 1;
+    padding: 20px 22px;
+    background: var(--glass-2);
+    backdrop-filter: blur(36px);
+    -webkit-backdrop-filter: blur(36px);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    text-align: left;
+    transition: border-color 0.25s var(--ease), transform 0.25s var(--ease), box-shadow 0.25s var(--ease);
+    box-shadow: var(--glass-shine), 0 4px 24px rgba(0,0,0,0.3);
+  }
+
+  .stat-block:hover {
+    border-color: rgba(0,211,149,0.3);
+    transform: translateY(-2px);
+    box-shadow: var(--glass-shine), 0 0 28px rgba(0,211,149,0.13), 0 12px 36px rgba(0,0,0,0.4);
+  }
+
+  .stat-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: rgba(255,255,255,0.3);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .stat-val {
+    font-family: var(--font-bebas);
+    font-size: 32px;
+    font-weight: 400;
+    color: var(--green);
+    letter-spacing: 0.04em;
+    line-height: 1;
+  }
+
+  .stat-desc {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: rgba(255,255,255,0.25);
+    margin-top: 4px;
+  }
+
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ─── APP PAGE ─── */
+  #app {
+    flex-direction: column;
+    padding: 0;
+  }
+
+  .app-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 40px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    background: rgba(6,8,8,0.55);
+    backdrop-filter: blur(52px);
+    -webkit-backdrop-filter: blur(52px);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    box-shadow: 0 1px 0 rgba(255,255,255,0.06), 0 4px 40px rgba(0,0,0,0.45);
+  }
+
+  .app-logo {
+    font-family: var(--font-bebas);
+    font-size: 22px;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+  }
+  .app-logo span { color: var(--green); }
+
+  .wallet-chip {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border: 1px solid var(--glass-border);
+    border-radius: 100px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-muted);
+    background: var(--glass-2);
+    backdrop-filter: blur(28px);
+    -webkit-backdrop-filter: blur(28px);
+    box-shadow: var(--glass-shine);
+    transition: border-color 0.2s var(--ease), box-shadow 0.2s var(--ease);
+  }
+
+  .wallet-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 6px rgba(0,211,149,0.9), 0 0 14px rgba(0,211,149,0.45);
+  }
+
+  .app-body {
+    flex: 1;
+    padding: 48px 40px;
+    max-width: 1100px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  /* ─── STEPS ─── */
+  .step { display: none; }
+  .step.active { display: block; }
+
+  /* STEP 1: Analyzing */
+  .analyzing-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 80vh;
+    gap: 40px;
+    text-align: center;
+    position: relative;
+  }
+
+  .radar-visual {
+    position: relative;
+    width: 180px; height: 180px;
+    flex-shrink: 0;
+  }
+
+  .radar-pulse {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 1px solid rgba(0,211,149,0.2);
+    animation: radarExpand 2.4s var(--ease) infinite;
+  }
+  .radar-pulse:nth-child(2) { animation-delay: 0.8s; }
+  .radar-pulse:nth-child(3) { animation-delay: 1.6s; }
+
+  @keyframes radarExpand {
+    0%   { transform: scale(0.6); opacity: 0.6; }
+    100% { transform: scale(1.8); opacity: 0; }
+  }
+
+  .radar-core {
+    position: absolute;
+    inset: 24px;
+    border-radius: 50%;
+    border: 1px solid var(--glass-border);
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(36px);
+    -webkit-backdrop-filter: blur(36px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--glass-shine), 0 0 24px rgba(0,211,149,0.12), 0 8px 32px rgba(0,0,0,0.4);
+  }
+
+  .radar-spinner {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 1.5px solid transparent;
+    border-top-color: var(--green);
+    animation: spin 1s linear infinite;
+    will-change: transform;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .radar-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--green);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .analyzing-title {
+    font-family: var(--font-bebas);
+    font-size: clamp(36px, 6vw, 56px);
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    line-height: 1;
+  }
+
+  .analyzing-subtitle {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-top: -20px;
+  }
+
+  .analyzing-log {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: rgba(255,255,255,0.5);
+    line-height: 2.2;
+    text-align: left;
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    padding: 24px 28px;
+    background: var(--glass-2);
+    backdrop-filter: blur(40px);
+    -webkit-backdrop-filter: blur(40px);
+    box-shadow: var(--glass-shine), 0 8px 40px rgba(0,0,0,0.45), 0 0 0 1px rgba(0,211,149,0.04);
+    min-width: 340px;
+    max-width: 460px;
+    width: 100%;
+  }
+
+  .log-line {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.4s var(--ease), transform 0.4s var(--ease);
+  }
+  .log-line::before {
+    content: '';
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: rgba(0,211,149,0.3);
+    flex-shrink: 0;
+    transition: background 0.3s;
+  }
+  .log-line.visible { opacity: 1; transform: translateY(0); }
+  .log-line.visible::before { background: var(--green); }
+  .log-line .log-ok { color: var(--green); }
+
+  /* STEP 2: Results */
+  .results-grid {
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    gap: 32px;
+    align-items: start;
+  }
+
+  .results-left { display: flex; flex-direction: column; gap: 16px; }
+
+  /* ─── ROAST VERDICT CARD ─── */
+  .verdict-card {
+    position: relative;
+    border: 1px solid rgba(255, 80, 50, 0.35);
+    border-left: 3px solid #ff5032;
+    border-radius: 12px;
+    padding: 28px 28px 24px;
+    background: rgba(255, 60, 30, 0.05);
+    backdrop-filter: blur(44px);
+    -webkit-backdrop-filter: blur(44px);
+    overflow: hidden;
+    box-shadow: 0 0 40px rgba(255,60,30,0.08), inset 0 1px 0 rgba(255,255,255,0.07);
+    transition: box-shadow 0.3s var(--ease), border-color 0.3s var(--ease);
+  }
+
+  .verdict-card:hover {
+    box-shadow: 0 0 60px rgba(255,60,30,0.14), inset 0 1px 0 rgba(255,255,255,0.07);
+    border-color: rgba(255,80,50,0.55);
+  }
+
+  .verdict-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,60,30,0.07) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  @keyframes verdictSweep {
+    0%   { transform: translateX(-100%); }
+    100% { transform: translateX(500%); }
+  }
+
+  .verdict-card::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 20%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,100,60,0.06), transparent);
+    animation: verdictSweep 5s ease-in-out infinite;
+  }
+
+  .verdict-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: #ff6b4a;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .verdict-label::before {
+    content: '';
+    display: inline-block;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #ff5032;
+    box-shadow: 0 0 8px rgba(255,80,50,0.9);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  .verdict-text {
+    font-family: var(--font-mono);
+    font-size: 17px;
+    color: rgba(255,255,255,0.92);
+    line-height: 1.75;
+    font-style: italic;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ─── ARCHETYPE STAMP ─── */
+  .archetype-card {
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 24px 28px;
+    background: rgba(255,255,255,0.04);
+    backdrop-filter: blur(44px);
+    -webkit-backdrop-filter: blur(44px);
+    box-shadow: var(--glass-shine), 0 8px 40px rgba(0,0,0,0.4);
+    transition: border-color 0.3s var(--ease), box-shadow 0.3s var(--ease);
+  }
+
+  .archetype-card:hover {
+    border-color: rgba(0,211,149,0.28);
+    box-shadow: var(--glass-shine), 0 0 36px rgba(0,211,149,0.1), 0 12px 44px rgba(0,0,0,0.5);
+  }
+
+  .archetype-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .archetype-trait {
+    font-family: var(--font-bebas);
+    font-size: 64px;
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    color: var(--green);
+    line-height: 1;
+    text-shadow: 0 0 40px rgba(0,211,149,0.25);
+    margin-bottom: 10px;
+  }
+
+  .archetype-narrative {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.75;
+    border-top: 1px solid rgba(255,255,255,0.07);
+    padding-top: 12px;
+    margin-top: 4px;
+  }
+
+  /* ─── EVIDENCE GRID (3-col compact) ─── */
+  .evidence-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+  }
+
+  .stat-card {
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    padding: 14px 16px;
+    background: rgba(255,255,255,0.04);
+    backdrop-filter: blur(36px);
+    -webkit-backdrop-filter: blur(36px);
+    transition: border-color 0.25s var(--ease), transform 0.25s var(--ease);
+    box-shadow: var(--glass-shine), 0 2px 12px rgba(0,0,0,0.3);
+  }
+
+  .stat-card:hover {
+    border-color: rgba(0,211,149,0.22);
+    transform: translateY(-1px);
+  }
+
+  .stat-card .s-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: rgba(255,255,255,0.25);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .stat-card .s-val {
+    font-family: var(--font-bebas);
+    font-size: 24px;
+    font-weight: 400;
+    color: var(--text);
+    letter-spacing: 0.04em;
+    line-height: 1;
+  }
+
+  .stat-card .s-sub {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: rgba(255,255,255,0.2);
+    margin-top: 3px;
+  }
+
+  /* ─── PREDICTION ─── */
+  .ai-line {
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+    padding: 18px 22px;
+    background: rgba(255,255,255,0.03);
+    backdrop-filter: blur(36px);
+    -webkit-backdrop-filter: blur(36px);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: rgba(255,255,255,0.45);
+    line-height: 1.7;
+    transition: border-color 0.25s var(--ease), box-shadow 0.25s var(--ease);
+  }
+
+  .ai-line:hover {
+    border-color: rgba(0,211,149,0.2);
+    color: rgba(255,255,255,0.6);
+  }
+
+  .ai-line .ai-tag {
+    font-size: 9px;
+    color: rgba(0,211,149,0.5);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  /* NFT CARD */
+  .nft-panel {
+    position: sticky;
+    top: 100px;
+  }
+
+  .nft-card {
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 16px;
+    overflow: hidden;
+    background: rgba(0,0,0,0.32);
+    backdrop-filter: blur(44px);
+    -webkit-backdrop-filter: blur(44px);
+    transition: transform 0.4s var(--ease), border-color 0.3s var(--ease), box-shadow 0.4s var(--ease);
+    will-change: transform;
+    animation: cardFloat 6s cubic-bezier(0.45,0.05,0.55,0.95) infinite;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.14), 0 0 60px rgba(0,211,149,0.1), 0 32px 80px rgba(0,0,0,0.7);
+  }
+
+  .nft-card:hover {
+    border-color: rgba(0,211,149,0.3);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.14), 0 0 80px rgba(0,211,149,0.18), 0 40px 100px rgba(0,0,0,0.75);
+  }
+
+  @keyframes cardFloat {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-8px); }
+  }
+
+  .nft-card-visual {
+    width: 100%;
+    aspect-ratio: 1;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* NFT card — PREMIUM DARK LUXURY */
+  .nft-cv-content {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    z-index: 5;
+    overflow: hidden;
+    background: linear-gradient(160deg, #080f09 0%, #040804 60%, #060d06 100%);
+  }
+
+  /* TOP BAR */
+  .nft-cv-topbar {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 4% 6% 3%;
+    border-bottom: 1px solid rgba(0,211,149,0.12);
+  }
+  .nft-cv-plabel {
+    font-family: 'DM Mono', monospace;
+    font-size: clamp(6px, 0.9vmin, 8px);
+    letter-spacing: 0.35em;
+    color: rgba(0,211,149,0.5);
+    text-transform: uppercase;
+  }
+  .nft-cv-topbar-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(8px, 1.3vmin, 11px);
+    letter-spacing: 0.2em;
+    color: rgba(255,255,255,0.2);
+  }
+
+  /* ARCHETYPE — huge hero */
+  .nft-cv-archetype-hero {
+    flex-shrink: 0;
+    padding: 5% 6% 3%;
+    position: relative;
+  }
+  .nft-cv-archetype-hero::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 6%; right: 6%;
+    height: 1px;
+    background: linear-gradient(90deg, var(--green), transparent);
+  }
+  .nft-cv-tier {
+    display: inline-block;
+    margin-top: 6%;
+    font-family: 'DM Mono', monospace;
+    font-size: clamp(7px, 1.1vmin, 9px);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(0,211,149,0.5);
+    border: 1px solid rgba(0,211,149,0.2);
+    padding: 3px 8px;
+    border-radius: 2px;
+  }
+
+  .nft-cv-trait-val {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(36px, 8vmin, 62px);
+    letter-spacing: 0.05em;
+    color: #00FFB2;
+    line-height: 0.9;
+    text-shadow:
+      0 0 30px rgba(0,255,178,0.4),
+      0 0 80px rgba(0,211,149,0.15);
+  }
+
+  /* ROAST — center hero */
+  .nft-cv-roast-block {
+    flex: 1;
+    padding: 5% 6%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 0;
+    position: relative;
+  }
+  .nft-cv-roast-label {
+    font-family: 'DM Mono', monospace;
+    font-size: clamp(5px, 0.8vmin, 7px);
+    letter-spacing: 0.35em;
+    color: rgba(255,255,255,0.2);
+    text-transform: uppercase;
+    margin-bottom: 3%;
+  }
+  .nft-cv-roast-text {
+    font-family: 'DM Mono', monospace;
+    font-size: clamp(10px, 2vmin, 14px);
+    color: rgba(255,255,255,0.9) !important;
+    line-height: 1.75;
+    font-style: italic;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+  }
+
+  /* STATS — compact 3x2 */
+  .nft-cv-stats-strip {
+    flex-shrink: 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border-top: 1px solid rgba(0,211,149,0.12);
+  }
+  .nft-cv-stat-cell {
+    padding: 3% 5%;
+    border-right: 1px solid rgba(0,211,149,0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .nft-cv-stat-cell:nth-child(3),
+  .nft-cv-stat-cell:last-child { border-right: none; }
+  .nft-cv-stat-cell:nth-child(4),
+  .nft-cv-stat-cell:nth-child(5),
+  .nft-cv-stat-cell:nth-child(6) {
+    border-top: 1px solid rgba(0,211,149,0.08);
+  }
+  .nft-cv-stat-cell-label {
+    font-family: 'DM Mono', monospace;
+    font-size: clamp(5px, 0.72vmin, 7px);
+    letter-spacing: 0.18em;
+    color: rgba(0,211,149,0.4);
+    text-transform: uppercase;
+  }
+  .nft-cv-stat-cell-val {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(11px, 1.7vmin, 14px);
+    letter-spacing: 0.04em;
+    color: rgba(255,255,255,0.85);
+    line-height: 1;
+  }
+
+  /* FOOTER */
+  .nft-cv-footer {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2.5% 6%;
+    border-top: 1px solid rgba(0,211,149,0.1);
+  }
+  .nft-cv-wallet {
+    font-family: 'DM Mono', monospace;
+    font-size: clamp(5px, 0.78vmin, 7px);
+    letter-spacing: 0.12em;
+    color: rgba(255,255,255,0.18);
+  }
+  .nft-cv-season {
+    font-family: 'DM Mono', monospace;
+    font-size: clamp(5px, 0.78vmin, 7px);
+    letter-spacing: 0.12em;
+    color: rgba(0,211,149,0.35);
+  }
+
+  /* ── TERMINAL STAT ROWS (capture card) ── */
+  #nft-capture .nc-stats {
+    position: absolute;
+    top: 216px; left: 0; right: 0;
+    padding: 0 72px;
+    z-index: 5;
+  }
+
+  #nft-capture .nc-stat-row {
+    display: flex;
+    align-items: center;
+    padding: 13px 0;
+    border-bottom: 1px solid rgba(0,211,149,0.13);
+  }
+  #nft-capture .nc-stat-row:last-child { border-bottom: none; }
+
+  #nft-capture .nc-stat-label {
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    color: rgba(0,211,149,0.55);
+    text-transform: uppercase;
+    white-space: nowrap;
+    flex-shrink: 0;
+    width: 210px;
+  }
+
+  #nft-capture .nc-stat-dots {
+    flex: 1;
+    height: 1px;
+    background: repeating-linear-gradient(
+      90deg,
+      rgba(0,211,149,0.25) 0px,
+      rgba(0,211,149,0.25) 3px,
+      transparent 3px,
+      transparent 8px
+    );
+    margin: 0 18px 2px;
+    align-self: center;
+  }
+
+  #nft-capture .nc-stat-val {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 17px;
+    letter-spacing: 0.08em;
+    color: #fff;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .nft-cv-wallet {
+    text-align: center;
+    font-size: clamp(6px, 0.85vmin, 9px);
+    letter-spacing: 0.2em;
+    color: rgba(255,255,255,0.18);
+    padding: 1% 0 2%;
+    flex-shrink: 0;
+  }
+
+  /* ── NFT CARD ENHANCEMENTS ── */
+  .nft-top-accent {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent 0%, var(--green-bright) 50%, transparent 100%);
+    z-index: 9;
+    box-shadow: 0 0 12px rgba(0,255,178,0.6), 0 0 28px rgba(0,211,149,0.3);
+  }
+
+  .nft-scan-lines {
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 3px,
+      rgba(0,0,0,0.055) 3px,
+      rgba(0,0,0,0.055) 4px
+    );
+    z-index: 8;
+    pointer-events: none;
+  }
+
+  .nft-trait-glow {
+    position: absolute;
+    width: 70%;
+    height: 38%;
+    top: 5%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: radial-gradient(ellipse, rgba(0,211,149,0.14) 0%, rgba(0,211,149,0.04) 50%, transparent 75%);
+    z-index: 2;
+    pointer-events: none;
+    animation: glowBreath 5s ease-in-out infinite;
+  }
+
+  .nft-cv-trait-val {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(22px, 5vmin, 36px);
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    color: #00FFB2;
+    line-height: 1.05;
+    text-align: center;
+    text-shadow: 0 0 16px rgba(0,211,149,0.7), 0 0 36px rgba(0,211,149,0.35);
+  }
+
+  .nft-cv-bbl {
+    border-radius: 50%;
+    border: 1px solid rgba(0,211,149,0.3);
+    background: rgba(0,211,149,0.06);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center; overflow: hidden;
+    min-height: 0;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.12), 0 0 14px rgba(0,211,149,0.1);
+  }
+
+  .nft-cv-bbl-val {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(10px, 1.8vmin, 16px);
+    color: #fff;
+    padding: 0 6%;
+    line-height: 1.2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 90%;
+    letter-spacing: 0.05em;
+  }
+
+  .nft-cv-roast {
+    border-top: 1px solid rgba(0,211,149,0.2);
+    background: rgba(0,211,149,0.05);
+    backdrop-filter: blur(28px);
+    -webkit-backdrop-filter: blur(28px);
+    box-shadow: inset 0 1px 0 rgba(0,211,149,0.12);
+    padding: 1.5% 7%;
+    text-align: center;
+    flex-shrink: 0;
+  }
+
+  .nft-cv-roast-label {
+    font-size: clamp(6px, 0.85vmin, 9px);
+    letter-spacing: 0.45em;
+    color: rgba(0,211,149,0.5);
+    text-transform: uppercase;
+    margin-bottom: 2px;
+  }
+
+  .nft-cv-hdr {
+    display: flex; justify-content: space-between;
+    padding: 3% 9%;
+    font-size: clamp(8px, 1.1vmin, 11px);
+    letter-spacing: 0.3em;
+    color: rgba(0,211,149,0.5);
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+
+  .nft-cv-bbl-dash {
+    width: 30%; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(0,211,149,0.7), transparent);
+    margin: 3% auto;
+    flex-shrink: 0;
+  }
+    padding: 20px 24px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(32px);
+    -webkit-backdrop-filter: blur(32px);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+  }
+
+  .nft-name {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .nft-collection {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+  }
+
+  .mint-btn {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(90deg, var(--green) 0%, var(--green-bright) 50%, var(--green) 100%);
+    background-size: 200% auto;
+    color: #000;
+    font-family: var(--font-bebas);
+    font-size: 18px;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    border: 1px solid rgba(255,255,255,0.24);
+    border-radius: 8px;
+    cursor: pointer;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow:
+      0 0 24px rgba(0,211,149,0.35),
+      0 0 60px rgba(0,211,149,0.12),
+      inset 0 1px 0 rgba(255,255,255,0.28),
+      0 4px 20px rgba(0,0,0,0.3);
+    transition: transform 0.2s var(--ease), box-shadow 0.2s var(--ease), background 0.2s var(--ease);
+    animation: shimmer 4s linear 1s infinite;
+    will-change: transform;
+    letter-spacing: 0.02em;
+  }
+
+  .mint-btn:hover {
+    background: var(--green-bright);
+    transform: translateY(-2px);
+    box-shadow:
+      0 0 44px rgba(0,211,149,0.52),
+      0 0 90px rgba(0,211,149,0.22),
+      inset 0 1px 0 rgba(255,255,255,0.28),
+      0 12px 36px rgba(0,0,0,0.4);
+  }
+
+  .mint-btn:active { transform: translateY(0); }
+  .mint-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+
+  .share-btn {
+    width: 100%;
+    margin-top: 10px;
+    padding: 16px;
+    background: #000;
+    color: #fff;
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 700;
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    transition: background 0.2s var(--ease), border-color 0.2s var(--ease), transform 0.2s var(--ease), box-shadow 0.2s var(--ease);
+    letter-spacing: 0.03em;
+    will-change: transform;
+    box-shadow: 0 0 0 1px rgba(255,255,255,0.04), 0 4px 16px rgba(0,0,0,0.5);
+  }
+
+  .share-btn:hover {
+    background: #111;
+    border-color: rgba(255,255,255,0.35);
+    transform: translateY(-2px);
+    box-shadow: 0 0 0 1px rgba(255,255,255,0.08), 0 8px 28px rgba(0,0,0,0.6);
+  }
+  .share-btn:active { transform: translateY(0); }
+
+  /* ─── MINTED STATE ─── */
+  .minted-banner {
+    display: none;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 20px;
+    border: 1px solid rgba(0,211,149,0.38);
+    border-radius: 10px;
+    background: rgba(0,211,149,0.09);
+    backdrop-filter: blur(32px);
+    -webkit-backdrop-filter: blur(32px);
+    margin-bottom: 16px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--green);
+    box-shadow: inset 0 1px 0 rgba(0,211,149,0.18), 0 0 24px rgba(0,211,149,0.1);
+  }
+  .minted-banner.show { display: flex; }
+
+  /* ─── WALLET MODAL ─── */
+  .wallet-modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 300;
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+  .wallet-modal-overlay.show { display: flex; }
+
+  .wallet-modal {
+    background: rgba(10,14,11,0.82);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    width: 100%;
+    max-width: 400px;
+    backdrop-filter: blur(56px);
+    -webkit-backdrop-filter: blur(56px);
+    box-shadow: 0 32px 80px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.12), 0 0 0 1px rgba(0,211,149,0.04);
+    overflow: hidden;
+    animation: modalIn 0.35s var(--ease-spring) forwards;
+  }
+
+  @keyframes modalIn {
+    from { opacity: 0; transform: translateY(16px) scale(0.97); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  .wallet-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px 16px;
+    border-bottom: 1px solid var(--glass-border);
+    background: rgba(255,255,255,0.025);
+    box-shadow: 0 1px 0 rgba(255,255,255,0.06);
+  }
+
+  .wallet-modal-title {
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  .wallet-modal-close {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    border: 1px solid var(--glass-border);
+    background: var(--glass-2);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    color: var(--text-muted);
+    font-size: 12px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.15s, color 0.15s, box-shadow 0.15s;
+    box-shadow: var(--glass-shine);
+  }
+  .wallet-modal-close:hover {
+    background: rgba(255,255,255,0.12);
+    color: var(--text);
+    box-shadow: var(--glass-shine), 0 0 12px rgba(255,255,255,0.06);
+  }
+
+  .wallet-list { padding: 12px; display: flex; flex-direction: column; gap: 4px; }
+
+  .wallet-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+    border-radius: 10px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: background 0.15s var(--ease), border-color 0.15s var(--ease);
+  }
+  .wallet-item:hover {
+    background: rgba(255,255,255,0.08);
+    border-color: var(--glass-border);
+    box-shadow: var(--glass-shine), 0 0 16px rgba(0,211,149,0.06);
+  }
+  .wallet-item-left { display: flex; align-items: center; gap: 14px; }
+  .wallet-item-icon {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    object-fit: contain;
+    background: rgba(255,255,255,0.05);
+    flex-shrink: 0;
+  }
+  .wallet-item-icon-placeholder {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    flex-shrink: 0;
+  }
+  .wallet-item-name {
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .wallet-item-badge {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--green);
+    border: 1px solid rgba(0,211,149,0.3);
+    border-radius: 100px;
+    padding: 3px 8px;
+    letter-spacing: 0.05em;
+  }
+  .wallet-none {
+    padding: 32px 24px;
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.8;
+  }
+  .wallet-none a { color: var(--green); text-decoration: none; }
+  .wallet-modal-footer {
+    padding: 14px 24px;
+    border-top: 1px solid var(--glass-border);
+    background: rgba(255,255,255,0.02);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: rgba(255,255,255,0.25);
+    text-align: center;
+  }
+  .wallet-modal-footer a { color: var(--green); text-decoration: none; }
+
+  /* ─── WALLET CHIP MENU ─── */
+  .wallet-chip-wrap {
+    position: relative;
+  }
+  .wallet-chip {
+    cursor: pointer;
+    user-select: none;
+  }
+  .wallet-chip:hover {
+    border-color: rgba(0,211,149,0.35);
+    box-shadow: var(--glass-shine), 0 0 16px rgba(0,211,149,0.1);
+  }
+  .wallet-menu {
+    display: none;
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    background: rgba(10,14,11,0.82);
+    border: 1px solid var(--glass-border);
+    border-radius: 10px;
+    backdrop-filter: blur(44px);
+    -webkit-backdrop-filter: blur(44px);
+    min-width: 160px;
+    overflow: hidden;
+    box-shadow: 0 16px 48px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.1);
+    z-index: 50;
+    animation: modalIn 0.2s var(--ease-spring) forwards;
+  }
+  .wallet-menu.show { display: block; }
+  .wallet-menu-item {
+    display: block; width: 100%;
+    padding: 12px 16px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: #ff6b6b;
+    background: none; border: none;
+    text-align: left; cursor: pointer;
+    transition: background 0.15s;
+  }
+  .wallet-menu-item:hover { background: rgba(255,68,68,0.08); }
+
+  /* ─── LOADING OVERLAY ─── */
+  .mint-loading {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    background: rgba(6,8,6,0.72);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 20px;
+    transition: background 0.4s var(--ease), backdrop-filter 0.4s var(--ease);
+  }
+  .mint-loading.show { display: flex; }
+
+  /* lighten overlay when waiting for wallet so the popup is visible */
+  .mint-loading.wallet-confirm {
+    background: rgba(6,8,6,0.25);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+  }
+  .mint-loading.wallet-confirm .mint-loading-sub { opacity: 0; }
+
+  .mint-wallet-hint {
+    display: none;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--green);
+    text-align: center;
+    letter-spacing: 0.1em;
+    padding: 10px 20px;
+    border: 1px solid rgba(0,211,149,0.3);
+    border-radius: 8px;
+    background: rgba(0,211,149,0.07);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: var(--glass-shine), 0 0 20px rgba(0,211,149,0.1);
+    animation: pulse 1.8s ease-in-out infinite;
+    margin-top: -4px;
+  }
+  .mint-loading.wallet-confirm .mint-wallet-hint { display: block; }
+
+  .mint-loading-text {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  /* ─── NOTIFICATION ─── */
+  .notif {
+    position: fixed;
+    bottom: 32px; right: 32px;
+    z-index: 200;
+    padding: 14px 20px;
+    border-radius: 10px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    border: 1px solid var(--glass-border);
+    background: rgba(10,14,11,0.78);
+    backdrop-filter: blur(44px);
+    -webkit-backdrop-filter: blur(44px);
+    color: var(--text);
+    transform: translateY(24px) scale(0.96);
+    opacity: 0;
+    transition: transform 0.4s var(--ease-spring), opacity 0.3s var(--ease);
+    pointer-events: none;
+    max-width: 320px;
+    box-shadow: 0 12px 44px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.12);
+  }
+  .notif.show { transform: translateY(0) scale(1); opacity: 1; }
+  .notif.success {
+    border-color: rgba(0,211,149,0.45);
+    color: var(--green);
+    box-shadow: 0 12px 44px rgba(0,0,0,0.5), inset 0 1px 0 rgba(0,211,149,0.14), 0 0 28px rgba(0,211,149,0.12);
+  }
+  .notif.error {
+    border-color: rgba(255,68,68,0.45);
+    color: #ff6b6b;
+    box-shadow: 0 12px 44px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,68,68,0.12), 0 0 28px rgba(255,68,68,0.08);
+  }
+
+  /* ─── SCROLLBAR ─── */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--black); }
+  ::-webkit-scrollbar-thumb { background: var(--border-bright); border-radius: 2px; }
+
+  /* ─── RESPONSIVE ─── */
+
+  /* Tablet (800px–1100px) */
+  @media (max-width: 1100px) and (min-width: 801px) {
+    .results-grid { grid-template-columns: 1fr 340px; }
+    .app-body { padding: 40px 28px; }
+  }
+
+  /* Mobile (≤800px) */
+  @media (max-width: 800px) {
+    .results-grid { grid-template-columns: 1fr; }
+    .nft-panel { position: static; }
+    .app-body { padding: 32px 20px; }
+    .app-header { padding: 20px; }
+    .stats-preview { flex-direction: column; gap: 8px; }
+    .stat-block { padding: 16px 20px; }
+    .analyzing-log { min-width: unset; width: 100%; }
+    .stats-grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  /* Small phones (≤480px) */
+  @media (max-width: 480px) {
+    .app-header { padding: 16px; }
+    .app-body { padding: 24px 16px; }
+    .stats-grid { grid-template-columns: 1fr 1fr; }
+    .personality-card { padding: 24px 20px; }
+    .personality-trait { font-size: 28px; }
+    .stat-block { padding: 14px 16px; }
+    .stat-val { font-size: 18px; }
+    .nft-card-visual { padding: 24px 20px; }
+    .nft-mini-stats { grid-template-columns: 1fr 1fr; }
+    .connect-btn { padding: 16px 28px; font-size: 18px; }
+    .mint-btn { font-size: 16px; }
+    .share-btn { font-size: 14px; padding: 14px; }
+    .results-grid { gap: 20px; }
+    .hero-title { font-size: clamp(56px, 22vw, 100px); }
+    #landing { padding: 40px 20px; }
+  }
+
+  /* Very small phones (≤360px) */
+  @media (max-width: 360px) {
+    .stats-grid { grid-template-columns: 1fr 1fr; }
+    .hero-title { font-size: clamp(52px, 20vw, 80px); }
+    .app-logo { font-size: 14px; }
+    .wallet-chip { font-size: 11px; padding: 6px 12px; }
+  }
+
+  /* ─── MINT LOADING SUB ─── */
+  .mint-loading-sub {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: rgba(255,255,255,0.2);
+    margin-top: -8px;
+  }
+
+  /* ─── RESULTS ENTRANCE ANIMATIONS ─── */
+  .results-enter {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.55s var(--ease-spring), transform 0.55s var(--ease-spring);
+  }
+  .results-enter.in {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ─── HIDDEN NFT CAPTURE CARD ─── */
+  #nft-capture-wrap {
+    position: fixed;
+    left: -9999px;
+    top: 0;
+    width: 800px;
+    height: 800px;
+    pointer-events: none;
+    z-index: -1;
+  }
+  #nft-capture {
+    position: relative;
+    width: 800px; height: 800px;
+    overflow: hidden;
+    background: linear-gradient(160deg, #080f09 0%, #040804 60%, #060d06 100%);
+    font-family: 'DM Mono', monospace;
+    display: flex;
+    flex-direction: column;
+  }
+  #nft-capture .nc-accent {
+    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, transparent 0%, #00FFB2 50%, transparent 100%);
+    z-index: 9;
+  }
+  #nft-capture .nc-scanlines {
+    position: absolute; inset: 0; pointer-events: none; z-index: 8;
+    background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.04) 3px, rgba(0,0,0,0.04) 4px);
+  }
+  #nft-capture .nc-noise {
+    position: absolute; inset: 0; opacity: 0.025; z-index: 7;
+    background-image: radial-gradient(circle, white 0.5px, transparent 0.5px);
+    background-size: 6px 6px;
+  }
+  #nft-capture .nc-topbar {
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 28px 48px 24px;
+    border-bottom: 1px solid rgba(0,211,149,0.12);
+    position: relative; z-index: 5;
+  }
+  #nft-capture .nc-plabel {
+    font-size: 11px; letter-spacing: 0.35em;
+    color: rgba(0,211,149,0.5); text-transform: uppercase;
+  }
+  #nft-capture .nc-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14px; letter-spacing: 0.2em; color: rgba(255,255,255,0.2);
+  }
+  #nft-capture .nc-archetype {
+    flex-shrink: 0;
+    padding: 30px 48px 26px;
+    position: relative; z-index: 5;
+    border-bottom: 1px solid rgba(0,211,149,0.1);
+  }
+  #nft-capture .nc-arch-label {
+    font-size: 10px; letter-spacing: 0.35em;
+    color: rgba(0,211,149,0.4); text-transform: uppercase; margin-bottom: 8px;
+  }
+  #nft-capture .nc-trait {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 100px; letter-spacing: 0.04em;
+    color: #00FFB2; line-height: 0.9;
+    text-shadow: 0 0 40px rgba(0,255,178,0.35), 0 0 100px rgba(0,211,149,0.12);
+  }
+  #nft-capture .nc-tier {
+    display: inline-block;
+    margin-top: 10px;
+    font-size: 10px; letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(0,211,149,0.5);
+    border: 1px solid rgba(0,211,149,0.2);
+    padding: 4px 10px;
+    border-radius: 2px;
+  }
+  #nft-capture .nc-roast-zone {
+    flex: 1;
+    padding: 32px 48px;
+    display: flex; flex-direction: column; justify-content: center;
+    position: relative; z-index: 5;
+    background: rgba(255,40,10,0.04);
+    overflow: hidden;
+  }
+  #nft-capture .nc-roast-zone::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0;
+    height: 1px; background: rgba(255,80,50,0.22);
+  }
+  #nft-capture .nc-roast-zone::after {
+    content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+    height: 1px; background: rgba(255,80,50,0.12);
+  }
+  #nft-capture .nc-roast-label {
+    font-size: 10px; letter-spacing: 0.4em;
+    color: rgba(255,100,60,0.55); text-transform: uppercase; margin-bottom: 20px;
+  }
+  #nft-capture .nc-roast-text {
+    font-size: 20px; color: rgba(255,255,255,0.92);
+    line-height: 1.72; font-style: italic;
+  }
+  #nft-capture .nc-stats-strip {
+    flex-shrink: 0;
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    position: relative; z-index: 5;
+    border-top: 1px solid rgba(0,211,149,0.12);
+  }
+  #nft-capture .nc-stat-cell {
+    padding: 18px 28px;
+    border-right: 1px solid rgba(0,211,149,0.08);
+    display: flex; flex-direction: column; gap: 5px;
+  }
+  #nft-capture .nc-stat-cell:nth-child(3) { border-right: none; }
+  #nft-capture .nc-stat-cell:nth-child(n+4) { border-top: 1px solid rgba(0,211,149,0.08); }
+  #nft-capture .nc-stat-cell:nth-child(6) { border-right: none; }
+  #nft-capture .nc-stat-label {
+    font-size: 9px; letter-spacing: 0.2em;
+    color: rgba(0,211,149,0.4); text-transform: uppercase;
+  }
+  #nft-capture .nc-stat-val {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px; letter-spacing: 0.04em;
+    color: rgba(255,255,255,0.85); line-height: 1;
+  }
+  #nft-capture .nc-footer {
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 48px;
+    border-top: 1px solid rgba(0,211,149,0.1);
+    position: relative; z-index: 5;
+  }
+  #nft-capture .nc-wallet {
+    font-size: 11px; letter-spacing: 0.12em; color: rgba(255,255,255,0.18);
+  }
+  #nft-capture .nc-season {
+    font-size: 11px; letter-spacing: 0.12em; color: rgba(0,211,149,0.35);
+  }
+</style>
+</head>
+<body>
+
+<!-- BG VIDEO -->
+<div class="bg-video-wrap">
+  <video autoplay muted loop playsinline>
+    <source src="mantle-bg.mp4" type="video/mp4">
+  </video>
+</div>
+<div class="bg-overlay"></div>
+<div class="particles" id="particles"></div>
+
+<!-- ─── LANDING PAGE ─── -->
+<div class="page active" id="landing">
+  <div class="landing-glow"></div>
+  <div class="landing-inner">
+
+    <div class="badge">
+      <div class="badge-dot"></div>
+      AI knows what you did onchain
+    </div>
+
+    <h1 class="hero-title">
+      <span class="word-mantle">Mantle</span><br>
+      <span class="word-wrapped">Wrapped</span>
+    </h1>
+
+    <div class="hero-savage">The blockchain remembers everything.</div>
+
+    <p class="hero-sub">
+      Connect your wallet. Get brutally roasted by AI.<br>
+      Mint the evidence.
+    </p>
+
+    <div class="roast-feed" id="roast-feed">
+      <div class="roast-quote">
+        <span class="roast-addr">0x3f9a...d12c · Paper Hands</span>
+        <span class="roast-text">"Bought the top. Sold the bottom. Twice. Most wallets give up after one mistake — you committed."</span>
+      </div>
+      <div class="roast-quote">
+        <span class="roast-addr">0xb841...77fe · Gas Burner</span>
+        <span class="roast-text">"You've interacted with 47 contracts. Zero of them made you money. That's almost impressive."</span>
+      </div>
+      <div class="roast-quote">
+        <span class="roast-addr">0x09cc...a3b1 · Silent Accumulator</span>
+        <span class="roast-text">"Your gas fees cost more than your realized gains. The miners thank you for your service."</span>
+      </div>
+    </div>
+
+    <button class="connect-btn" onclick="openWalletModal()">
+      Roast My Wallet
+      <svg class="btn-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <path d="M3 8h10M9 4l4 4-4 4" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+    <div style="margin-top:14px;">
+      <button onclick="simulateWallet()" style="background:none;border:none;font-family:var(--font-mono);font-size:11px;color:rgba(255,255,255,0.3);letter-spacing:0.1em;cursor:pointer;text-decoration:underline;text-underline-offset:3px;transition:color 0.2s;" onmouseover="this.style.color='rgba(0,211,149,0.7)'" onmouseout="this.style.color='rgba(255,255,255,0.3)'">
+        Try demo →
+      </button>
+    </div>
+
+    <div class="stats-preview">
+      <div class="stat-block">
+        <div class="stat-label">Wallets Roasted</div>
+        <div class="stat-val" id="stat-wallets">—</div>
+        <div class="stat-desc">this season</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-label">Roast NFTs Minted</div>
+        <div class="stat-val" id="stat-minted">—</div>
+        <div class="stat-desc">on Mantle</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-label">Unique Archetypes</div>
+        <div class="stat-val" id="stat-traits">—</div>
+        <div class="stat-desc">discovered</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ─── APP PAGE ─── -->
+<div class="page" id="app">
+  <header class="app-header">
+    <div class="app-logo">Mantle <span>Wrapped</span></div>
+    <div class="wallet-chip-wrap">
+      <div class="wallet-chip" onclick="toggleWalletMenu(event)">
+        <div class="wallet-dot"></div>
+        <span id="wallet-display">0x0000...0000</span>
+        <svg width="10" height="6" viewBox="0 0 10 6" fill="none" style="margin-left:4px;">
+          <path d="M1 1l4 4 4-4" stroke="rgba(255,255,255,0.35)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="wallet-menu" id="wallet-menu">
+        <button class="wallet-menu-item" onclick="disconnectWallet()">Disconnect wallet</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="app-body">
+
+    <!-- STEP 1: ANALYZING -->
+    <div class="step active" id="step-analyzing">
+      <div class="analyzing-wrap">
+        <div class="radar-visual">
+          <div class="radar-pulse"></div>
+          <div class="radar-pulse"></div>
+          <div class="radar-pulse"></div>
+          <div class="radar-core">
+            <div class="radar-spinner"></div>
+            <div class="radar-label">👀</div>
+          </div>
+        </div>
+
+        <div class="analyzing-title">Digging through your wallet</div>
+        <div class="analyzing-subtitle">This might sting a little.</div>
+
+        <div class="analyzing-log" id="log-container">
+          <div class="log-line" id="log-1">Pulling your transaction history...</div>
+          <div class="log-line" id="log-2">Counting the red candles...</div>
+          <div class="log-line" id="log-3">Identifying protocols you rage-quit...</div>
+          <div class="log-line" id="log-4">Calculating gas fees vs. actual gains... <span style="color:#ff6b6b">oof.</span></div>
+          <div class="log-line" id="log-5">Determining how long you've been losing...</div>
+          <div class="log-line" id="log-6">Generating your roast... <span style="color:var(--green)">AI is judging you.</span></div>
+          <div class="log-line" id="log-7"><span class="log-ok">Done.</span> Brace yourself.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 2: RESULTS -->
+    <div class="step" id="step-results">
+      <div class="results-grid">
+
+        <!-- LEFT: RESULTS -->
+        <div class="results-left">
+
+          <!-- 1. ROAST VERDICT — hero -->
+          <div class="verdict-card results-enter">
+            <div class="verdict-label">AI Verdict</div>
+            <div class="verdict-text" id="res-roast">—</div>
+          </div>
+
+          <!-- 2. ARCHETYPE STAMP -->
+          <div class="archetype-card results-enter">
+            <div class="archetype-label">Your Archetype</div>
+            <div class="archetype-trait" id="res-trait">—</div>
+            <div class="archetype-narrative" id="res-narrative">—</div>
+          </div>
+
+          <!-- 3. EVIDENCE GRID -->
+          <div class="results-enter">
+            <div class="evidence-label">The Evidence</div>
+            <div class="stats-grid">
+              <div class="stat-card">
+                <div class="s-label">Transactions</div>
+                <div class="s-val" id="res-txns">—</div>
+                <div class="s-sub">on Mantle</div>
+              </div>
+              <div class="stat-card">
+                <div class="s-label">Volume</div>
+                <div class="s-val" id="res-volume">—</div>
+                <div class="s-sub">transacted</div>
+              </div>
+              <div class="stat-card">
+                <div class="s-label">On Chain Since</div>
+                <div class="s-val" id="res-since">—</div>
+                <div class="s-sub">first tx</div>
+              </div>
+              <div class="stat-card">
+                <div class="s-label">Gas Spent</div>
+                <div class="s-val" id="res-gas">—</div>
+                <div class="s-sub">MNT burned</div>
+              </div>
+              <div class="stat-card">
+                <div class="s-label">Top Protocol</div>
+                <div class="s-val" id="res-protocol" style="font-size:16px;line-height:1.2;margin-top:2px;">—</div>
+                <div class="s-sub">most used</div>
+              </div>
+              <div class="stat-card">
+                <div class="s-label">Contracts</div>
+                <div class="s-val" id="res-contracts">—</div>
+                <div class="s-sub">touched</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4. PREDICTION -->
+          <div class="ai-line results-enter">
+            <span class="ai-tag">AI Prediction — 2026</span>
+            <span id="res-prediction">—</span>
+          </div>
+
+        </div>
+
+        <!-- RIGHT: NFT PANEL -->
+        <div class="nft-panel results-enter">
+          <div class="nft-card">
+            <div class="nft-card-visual" id="nft-visual">
+              <!-- video bg -->
+              <video autoplay muted loop playsinline style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.4;z-index:0;">
+                <source src="mantle-bg.mp4" type="video/mp4">
+              </video>
+              <!-- glass overlay -->
+              <div style="position:absolute;inset:0;background:rgba(2,6,3,0.62);backdrop-filter:blur(2px);z-index:1;"></div>
+              <!-- top accent glow bar -->
+              <div class="nft-top-accent"></div>
+              <!-- scan lines -->
+              <div class="nft-scan-lines"></div>
+              <!-- trait ambient glow -->
+              <div class="nft-trait-glow"></div>
+              <!-- corner brackets -->
+              <div style="position:absolute;top:5%;left:5%;width:6%;height:6%;border-top:1.5px solid rgba(0,211,149,0.85);border-left:1.5px solid rgba(0,211,149,0.85);z-index:6;box-shadow:-2px -2px 8px rgba(0,211,149,0.2);"></div>
+              <div style="position:absolute;top:5%;right:5%;width:6%;height:6%;border-top:1.5px solid rgba(0,211,149,0.85);border-right:1.5px solid rgba(0,211,149,0.85);z-index:6;box-shadow:2px -2px 8px rgba(0,211,149,0.2);"></div>
+              <div style="position:absolute;bottom:5%;left:5%;width:6%;height:6%;border-bottom:1.5px solid rgba(0,211,149,0.85);border-left:1.5px solid rgba(0,211,149,0.85);z-index:6;box-shadow:-2px 2px 8px rgba(0,211,149,0.2);"></div>
+              <div style="position:absolute;bottom:5%;right:5%;width:6%;height:6%;border-bottom:1.5px solid rgba(0,211,149,0.85);border-right:1.5px solid rgba(0,211,149,0.85);z-index:6;box-shadow:2px 2px 8px rgba(0,211,149,0.2);"></div>
+
+              <!-- flex column content — PREMIUM DARK LUXURY -->
+              <div class="nft-cv-content">
+
+                <!-- top bar -->
+                <div class="nft-cv-topbar">
+                  <span class="nft-cv-plabel">Mantle Wrapped · S1</span>
+                  <span class="nft-cv-topbar-logo">2026</span>
+                </div>
+
+                <!-- archetype hero -->
+                <div class="nft-cv-archetype-hero">
+                  <div class="nft-cv-plabel" style="margin-bottom:3%;">Your Archetype</div>
+                  <div id="nft-trait" class="nft-cv-trait-val">—</div>
+                  <div id="nft-tier" class="nft-cv-tier">—</div>
+                </div>
+
+                <!-- roast center -->
+                <div class="nft-cv-roast-block">
+                  <div class="nft-cv-roast-label">AI Verdict</div>
+                  <div id="nft-roast" class="nft-cv-roast-text">—</div>
+                </div>
+
+                <!-- stats 3x2 -->
+                <div class="nft-cv-stats-strip">
+                  <div class="nft-cv-stat-cell">
+                    <span class="nft-cv-stat-cell-label">Volume</span>
+                    <span id="nft-volume" class="nft-cv-stat-cell-val">—</span>
+                  </div>
+                  <div class="nft-cv-stat-cell">
+                    <span class="nft-cv-stat-cell-label">Txns</span>
+                    <span id="nft-txns" class="nft-cv-stat-cell-val">—</span>
+                  </div>
+                  <div class="nft-cv-stat-cell">
+                    <span class="nft-cv-stat-cell-label">Gas</span>
+                    <span id="nft-gas" class="nft-cv-stat-cell-val">—</span>
+                  </div>
+                  <div class="nft-cv-stat-cell">
+                    <span class="nft-cv-stat-cell-label">Since</span>
+                    <span id="nft-since" class="nft-cv-stat-cell-val">—</span>
+                  </div>
+                  <div class="nft-cv-stat-cell">
+                    <span class="nft-cv-stat-cell-label">Protocol</span>
+                    <span id="nft-protocol" class="nft-cv-stat-cell-val">—</span>
+                  </div>
+                  <div class="nft-cv-stat-cell">
+                    <span class="nft-cv-stat-cell-label">Contracts</span>
+                    <span id="nft-contracts" class="nft-cv-stat-cell-val">—</span>
+                  </div>
+                </div>
+
+                <!-- footer -->
+                <div class="nft-cv-footer">
+                  <span id="nft-addr" class="nft-cv-wallet">0x0000...0000</span>
+                  <span class="nft-cv-season">Mantle Wrapped</span>
+                </div>
+
+              </div>
+            </div>
+
+            <div class="nft-card-info">
+              <div class="nft-name">Mantle Wrapped #<span id="nft-id">???</span></div>
+              <div class="nft-collection">Mantle Wrapped — Season 1</div>
+
+              <div class="minted-banner" id="minted-banner">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                  <circle cx="7" cy="7" r="6" stroke="#00D395" stroke-width="1.2"/>
+                  <path d="M4.5 7l2 2 3-3" stroke="#00D395" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                NFT minted to your wallet
+              </div>
+
+              <button class="mint-btn" id="mint-btn" onclick="mintNFT()">
+                Mint My Wrapped NFT
+              </button>
+              <button class="share-btn" onclick="shareWrapped()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.912-5.622Zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                Post the Roast
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- WALLET MODAL -->
+<div class="wallet-modal-overlay" id="wallet-modal-overlay" onclick="closeWalletModal()">
+  <div class="wallet-modal" onclick="event.stopPropagation()">
+    <div class="wallet-modal-header">
+      <div class="wallet-modal-title">Connect Wallet</div>
+      <button class="wallet-modal-close" onclick="closeWalletModal()">✕</button>
+    </div>
+    <div class="wallet-list" id="wallet-list"></div>
+    <div class="wallet-modal-footer">
+      New to Web3? <a href="https://metamask.io" target="_blank" rel="noopener">Get MetaMask →</a>
+    </div>
+  </div>
+</div>
+
+<!-- MINT LOADING OVERLAY -->
+<div class="mint-loading" id="mint-loading">
+  <div class="radar-visual">
+    <div class="radar-pulse"></div>
+    <div class="radar-pulse"></div>
+    <div class="radar-pulse"></div>
+    <div class="radar-core">
+      <div class="radar-spinner"></div>
+      <div class="radar-label">NFT</div>
+    </div>
+  </div>
+  <div class="mint-loading-text" id="mint-loading-text">Uploading to IPFS &amp; minting...</div>
+  <div class="mint-loading-sub">This may take 15–30 seconds</div>
+  <div class="mint-wallet-hint">↑ Open your wallet app to approve</div>
+</div>
+
+<!-- NOTIFICATION -->
+<div class="notif" id="notif"></div>
+
+<script>
+  // ─── CONFIG ───
+  const BACKEND_URL = 'https://mantle-wrapped-backend.onrender.com'; // replace with your Render URL
+  const CONTRACT_ADDRESS = '0xfaB1E40725b4411113C8D7614E4f774f5AFe08EC';
+  const MANTLE_CHAIN_ID = '0x1388'; // 5000
+
+  const CONTRACT_ABI = [
+    {
+      "inputs": [
+        { "internalType": "string", "name": "ipfsHash", "type": "string" },
+        { "internalType": "string", "name": "trait", "type": "string" }
+      ],
+      "name": "mintWrapped",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [{ "internalType": "address", "name": "wallet", "type": "address" }],
+      "name": "hasMinted",
+      "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ];
+
+  // ─── STATE ───
+  let walletAddress = null;
+  let wrappedData = null;
+  let minted = false;
+  let activeProvider = null;
+
+  // ─── EIP-6963 WALLET DETECTION ───
+  const eip6963Providers = [];
+  window.addEventListener('eip6963:announceProvider', (event) => {
+    const { detail } = event;
+    if (!eip6963Providers.find(p => p.info.uuid === detail.info.uuid)) {
+      eip6963Providers.push(detail);
+    }
+  });
+  window.dispatchEvent(new Event('eip6963:requestProvider'));
+
+  // restore session from localStorage
+  try {
+    const saved = localStorage.getItem('mw_session');
+    if (saved) {
+      const s = JSON.parse(saved);
+      walletAddress = s.walletAddress;
+      wrappedData = s.wrappedData;
+      minted = s.minted || false;
+      if (walletAddress && wrappedData) {
+        activeProvider = window.ethereum || null;
+        document.getElementById('wallet-display').textContent = shortAddr(walletAddress);
+        document.getElementById('nft-addr').textContent = shortAddr(walletAddress);
+        populateResults(wrappedData);
+        if (minted) {
+          document.getElementById('minted-banner').classList.add('show');
+          document.getElementById('mint-btn').textContent = 'Minted';
+        }
+        showPage('app');
+        showStep('step-results');
+        // trigger entrance on session restore (after paint)
+        requestAnimationFrame(() => {
+          document.querySelectorAll('#step-results .results-enter').forEach((el, i) => {
+            setTimeout(() => el.classList.add('in'), 80 + i * 110);
+          });
+        });
+      }
+    }
+  } catch (_) {}
+
+  // ─── UTILS ───
+  function shortAddr(addr) {
+    return addr.slice(0, 6) + '...' + addr.slice(-4);
+  }
+
+  function showNotif(msg, type = '') {
+    const el = document.getElementById('notif');
+    el.textContent = msg;
+    el.className = 'notif show ' + type;
+    clearTimeout(el._t);
+    el._t = setTimeout(() => { el.className = 'notif'; }, 4000);
+  }
+
+  function showPage(id) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    if (id === 'landing') loadLandingStats();
+  }
+
+  function showStep(id) {
+    document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+    const step = document.getElementById(id);
+    step.classList.add('active');
+    if (id === 'step-results') {
+      const els = step.querySelectorAll('.results-enter');
+      els.forEach((el, i) => {
+        el.classList.remove('in');
+        setTimeout(() => el.classList.add('in'), 80 + i * 110);
+      });
+    }
+  }
+
+  // init hidden card watermark rays (deferred so element exists)
+  document.addEventListener('DOMContentLoaded', () => {
+    const ncWm = document.getElementById('nc-wm');
+    if (!ncWm) return;
+    for (let i = 0; i < 18; i++) {
+      const r = document.createElement('div');
+      r.className = 'nc-ray';
+      r.style.transform = `translate(-50%, -100%) rotate(${i * 20}deg) translateY(-180px)`;
+      ncWm.appendChild(r);
+    }
+  });
+
+  // ─── LANDING STATS ───
+  let _statsLoading = false;
+  async function loadLandingStats(attempt = 1) {
+    if (_statsLoading) return;
+    _statsLoading = true;
+    // show loading dots on first attempt
+    if (attempt === 1) {
+      ['stat-wallets','stat-minted','stat-traits'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el && el.textContent === '—') el.textContent = '...';
+      });
+    }
+    try {
+      const ctrl = new AbortController();
+      const t = setTimeout(() => ctrl.abort(), 8000);
+      const res = await fetch(`${BACKEND_URL}/api/stats`, { signal: ctrl.signal });
+      clearTimeout(t);
+      if (!res.ok) throw new Error();
+      const data = await res.json();
+      document.getElementById('stat-wallets').textContent = data.walletsAnalyzed.toLocaleString();
+      document.getElementById('stat-minted').textContent = data.nftsMinted.toLocaleString();
+      document.getElementById('stat-traits').textContent = data.uniqueTraits;
+
+      // populate live roast feed if backend has real roasts
+      if (data.recentRoasts && data.recentRoasts.length >= 3) {
+        const feed = document.getElementById('roast-feed');
+        if (feed) {
+          const picks = data.recentRoasts.slice(0, 3);
+          feed.innerHTML = picks.map((r, i) => `
+            <div class="roast-quote" style="animation-delay:${i * 0.05}s">
+              <span class="roast-addr">${r.addr} · ${r.trait}</span>
+              <span class="roast-text">"${r.roast}"</span>
+            </div>`).join('');
+        }
+      }
+
+      _statsLoading = false;
+    } catch (_) {
+      _statsLoading = false;
+      if (attempt < 4) setTimeout(() => loadLandingStats(attempt + 1), 6000);
+      else ['stat-wallets','stat-minted','stat-traits'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el && el.textContent === '...') el.textContent = '—';
+      });
+    }
+  }
+
+  loadLandingStats();
+
+  // ─── WALLET MODAL ───
+  function openWalletModal() {
+    // re-request to catch late-announcing wallets
+    window.dispatchEvent(new Event('eip6963:requestProvider'));
+    setTimeout(() => _renderWalletList(), 50);
+    document.getElementById('wallet-modal-overlay').classList.add('show');
+  }
+
+  function _renderWalletList() {
+    const list = document.getElementById('wallet-list');
+    list.innerHTML = '';
+
+    const providers = eip6963Providers.length > 0 ? eip6963Providers : null;
+
+    if (providers && providers.length > 0) {
+      providers.forEach(({ info, provider }) => {
+        list.appendChild(_walletItem(info.name, info.icon, true, () => {
+          closeWalletModal();
+          connectWithProvider(provider, info.name);
+        }));
+      });
+    } else if (window.ethereum) {
+      const name = window.ethereum.isMetaMask ? 'MetaMask'
+        : window.ethereum.isCoinbaseWallet ? 'Coinbase Wallet'
+        : window.ethereum.isRabby ? 'Rabby'
+        : 'Browser Wallet';
+      list.appendChild(_walletItem(name, null, true, () => {
+        closeWalletModal();
+        connectWithProvider(window.ethereum, name);
+      }));
+    } else {
+      list.innerHTML = `<div class="wallet-none">No wallets detected.<br>Install <a href="https://metamask.io" target="_blank" rel="noopener">MetaMask</a> to continue.</div>`;
+    }
+  }
+
+  function _walletItem(name, icon, detected, onClick) {
+    const div = document.createElement('div');
+    div.className = 'wallet-item';
+    div.onclick = onClick;
+    const iconEl = icon
+      ? `<img src="${icon}" class="wallet-item-icon" alt="${name}">`
+      : `<div class="wallet-item-icon-placeholder"></div>`;
+    div.innerHTML = `
+      <div class="wallet-item-left">${iconEl}<span class="wallet-item-name">${name}</span></div>
+      ${detected ? '<span class="wallet-item-badge">Detected</span>' : ''}
+    `;
+    return div;
+  }
+
+  function closeWalletModal() {
+    document.getElementById('wallet-modal-overlay').classList.remove('show');
+  }
+
+  // close modal on Escape
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeWalletModal(); });
+
+  // ─── CONNECT WITH PROVIDER ───
+  async function connectWithProvider(provider, walletName) {
+    try {
+      const accounts = await provider.request({ method: 'eth_requestAccounts' });
+      walletAddress = accounts[0];
+      activeProvider = provider;
+
+      try {
+        await provider.request({ method: 'wallet_switchEthereumChain', params: [{ chainId: MANTLE_CHAIN_ID }] });
+      } catch (switchErr) {
+        if (switchErr.code === 4902) {
+          await provider.request({
+            method: 'wallet_addEthereumChain',
+            params: [{
+              chainId: '0x1388',
+              chainName: 'Mantle',
+              nativeCurrency: { name: 'MNT', symbol: 'MNT', decimals: 18 },
+              rpcUrls: ['https://rpc.mantle.xyz'],
+              blockExplorerUrls: ['https://explorer.mantle.xyz']
+            }]
+          });
+        }
+      }
+
+      document.getElementById('wallet-display').textContent = shortAddr(walletAddress);
+      document.getElementById('nft-addr').textContent = shortAddr(walletAddress);
+      showPage('app');
+      startAnalysis();
+    } catch (err) {
+      showNotif('Connection cancelled.', 'error');
+    }
+  }
+
+  // ─── DISCONNECT ───
+  function disconnectWallet() {
+    walletAddress = null;
+    wrappedData = null;
+    minted = false;
+    activeProvider = null;
+    try { localStorage.removeItem('mw_session'); } catch (_) {}
+    document.getElementById('wallet-menu').classList.remove('show');
+    showPage('landing');
+  }
+
+  // ─── WALLET CHIP MENU ───
+  function toggleWalletMenu(e) {
+    e.stopPropagation();
+    document.getElementById('wallet-menu').classList.toggle('show');
+  }
+  document.addEventListener('click', () => {
+    document.getElementById('wallet-menu')?.classList.remove('show');
+  });
+
+  // ─── ANALYSIS ───
+  async function startAnalysis() {
+    showStep('step-analyzing');
+
+    const logs = ['log-1','log-2','log-3','log-4','log-5','log-6','log-7'];
+    for (let i = 0; i < logs.length; i++) {
+      await delay(600 + i * 400);
+      document.getElementById(logs[i]).classList.add('visible');
+    }
+
+    await delay(800);
+    await fetchWrappedData();
+  }
+
+  function roastCacheKey(addr) {
+    return 'mw_roast_' + addr.toLowerCase();
+  }
+
+  async function fetchWrappedData() {
+    // Return cached roast for this wallet if it exists
+    try {
+      const cached = localStorage.getItem(roastCacheKey(walletAddress));
+      if (cached) {
+        wrappedData = JSON.parse(cached);
+        populateResults(wrappedData);
+        try { localStorage.setItem('mw_session', JSON.stringify({ walletAddress, wrappedData, minted })); } catch (_) {}
+        showStep('step-results');
+        return;
+      }
+    } catch (_) {}
+
+    try {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 30000);
+
+      const res = await fetch(`${BACKEND_URL}/api/wrapped`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ wallet: walletAddress }),
+        signal: controller.signal
+      });
+
+      clearTimeout(timeout);
+
+      if (!res.ok) {
+        const errData = await res.json().catch(() => ({}));
+        throw new Error(errData.error || `Server error: ${res.status}`);
+      }
+      wrappedData = await res.json();
+      populateResults(wrappedData);
+      try { localStorage.setItem(roastCacheKey(walletAddress), JSON.stringify(wrappedData)); } catch (_) {}
+      try { localStorage.setItem('mw_session', JSON.stringify({ walletAddress, wrappedData, minted })); } catch (_) {}
+      showStep('step-results');
+    } catch (err) {
+      const msg = err.name === 'AbortError' ? 'Request timed out. Try again.' : `Error: ${err.message}`;
+      console.error('fetchWrappedData:', err.message);
+      showNotif(msg, 'error');
+      setTimeout(() => showPage('landing'), 1500);
+    }
+  }
+
+  function getTier(txns) {
+    if (txns >= 2000) return 'Blockchain Prisoner';
+    if (txns >= 751)  return 'Terminally Online';
+    if (txns >= 301)  return 'Protocol Addict';
+    if (txns >= 101)  return 'Chronic Onchainer';
+    if (txns >= 26)   return 'Occasional Degen';
+    return 'Ghost Wallet';
+  }
+
+  function populateResults(data) {
+    const nftId = Math.floor(Math.random() * 9000) + 1000;
+    const tier = getTier(data.stats.transactions);
+
+    // left panel
+    document.getElementById('res-trait').textContent = data.trait;
+    document.getElementById('res-narrative').textContent = data.narrative;
+    document.getElementById('res-txns').textContent = data.stats.transactions.toLocaleString();
+    document.getElementById('res-volume').textContent = data.stats.volume;
+    document.getElementById('res-since').textContent = data.stats.since;
+    document.getElementById('res-gas').textContent = data.stats.gas;
+    document.getElementById('res-protocol').textContent = data.stats.topProtocol;
+    document.getElementById('res-contracts').textContent = data.stats.uniqueContracts;
+    document.getElementById('res-prediction').textContent = data.prediction;
+    document.getElementById('res-roast').textContent = data.roast;
+
+    // nft card (visible panel)
+    document.getElementById('nft-trait').textContent = data.trait;
+    document.getElementById('nft-txns').textContent = data.stats.transactions.toLocaleString();
+    document.getElementById('nft-volume').textContent = data.stats.volume;
+    document.getElementById('nft-since').textContent = data.stats.since;
+    document.getElementById('nft-gas').textContent = data.stats.gas;
+    document.getElementById('nft-protocol').textContent = data.stats.topProtocol;
+    document.getElementById('nft-contracts').textContent = data.stats.uniqueContracts;
+    document.getElementById('nft-roast').textContent = data.roast;
+    document.getElementById('nft-addr').textContent = shortAddr(walletAddress);
+    document.getElementById('nft-id').textContent = nftId;
+
+    // visible nft card tier
+    document.getElementById('nft-tier').textContent = tier;
+    // hidden capture card
+    document.getElementById('nc-tier').textContent = tier;
+    document.getElementById('nc-trait').textContent = data.trait;
+    document.getElementById('nc-volume').textContent = data.stats.volume;
+    document.getElementById('nc-txns').textContent = data.stats.transactions.toLocaleString();
+    document.getElementById('nc-gas').textContent = data.stats.gas;
+    document.getElementById('nc-since').textContent = data.stats.since;
+    document.getElementById('nc-protocol').textContent = data.stats.topProtocol;
+    document.getElementById('nc-contracts').textContent = data.stats.uniqueContracts;
+    document.getElementById('nc-roast').textContent = data.roast;
+    document.getElementById('nc-wallet').textContent = shortAddr(walletAddress);
+  }
+
+  // ─── MINT ───
+  let _cachedIpfsHash = null; // reuse if tx fails after upload succeeds
+
+  async function mintNFT() {
+    if (!walletAddress || !wrappedData) return;
+    if (minted) { showNotif('Already minted this season.', ''); return; }
+
+    const mintBtn = document.getElementById('mint-btn');
+    const loadingEl = document.getElementById('mint-loading');
+    const loadingText = document.getElementById('mint-loading-text');
+
+    mintBtn.disabled = true;
+    loadingEl.classList.add('show');
+
+    try {
+      let ipfsHash = _cachedIpfsHash;
+
+      if (!ipfsHash) {
+        // capture + upload only if we don't already have the hash
+        loadingText.textContent = 'Uploading to IPFS...';
+        const canvas = await html2canvas(document.getElementById('nft-capture'), {
+          backgroundColor: null,
+          scale: 1,
+          useCORS: true,
+          width: 800,
+          height: 800
+        });
+        const imageBase64 = canvas.toDataURL('image/png').split(',')[1];
+
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 90000);
+        const uploadRes = await fetch(`${BACKEND_URL}/api/upload-metadata`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ wallet: walletAddress, data: wrappedData, imageBase64 }),
+          signal: controller.signal
+        });
+        clearTimeout(timeout);
+        if (!uploadRes.ok) throw new Error(`Upload failed: ${uploadRes.status}`);
+        const data = await uploadRes.json();
+        ipfsHash = data.ipfsHash;
+        _cachedIpfsHash = ipfsHash; // cache so retries skip re-upload
+      }
+
+      // send transaction — lighten overlay so wallet popup is visible
+      loadingText.textContent = 'Confirm in your wallet...';
+      loadingEl.classList.add('wallet-confirm');
+      const provider = new ethers.BrowserProvider(activeProvider || window.ethereum);
+      const signer = await provider.getSigner();
+      const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
+
+      const tx = await contract.mintWrapped(ipfsHash, wrappedData.trait, {
+        gasLimit: 300000
+      });
+
+      // user approved — go heavy again while waiting for on-chain confirmation
+      loadingEl.classList.remove('wallet-confirm');
+      loadingText.textContent = 'Minting on-chain...';
+      await tx.wait();
+
+      _cachedIpfsHash = null;
+      minted = true;
+      try { localStorage.setItem('mw_session', JSON.stringify({ walletAddress, wrappedData, minted })); } catch (_) {}
+      loadingEl.classList.remove('show');
+      document.getElementById('minted-banner').classList.add('show');
+      mintBtn.textContent = 'Minted';
+      showNotif('NFT minted to your wallet.', 'success');
+
+    } catch (err) {
+      loadingEl.classList.remove('show', 'wallet-confirm');
+      mintBtn.disabled = false;
+
+      if (err.name === 'AbortError') {
+        showNotif('Upload timed out. Try again.', 'error');
+      } else if (err.code === 4001 || err.code === 'ACTION_REJECTED') {
+        showNotif('Transaction rejected.', 'error');
+      } else if (err.code === -32002 || err.code === 32002) {
+        // IPFS upload likely succeeded — show retry button
+        showNotif('Wallet busy. Open your wallet app and try again.', 'error');
+        mintBtn.disabled = false;
+        mintBtn.textContent = 'Retry Transaction';
+      } else {
+        const msg = err.reason || err.message || 'Unknown error';
+        showNotif(`Mint failed: ${msg.slice(0, 80)}`, 'error');
+        console.error('mintNFT:', err);
+      }
+    }
+  }
+
+  // ─── DEMO / SIMULATE ───
+  async function simulateWallet() {
+    walletAddress = '0x3f9a...d12c';
+    document.getElementById('wallet-display').textContent = '0x3f9a...d12c';
+    document.getElementById('nft-addr').textContent = '0x3f9a...d12c';
+    showPage('app');
+    showStep('step-analyzing');
+
+    const logs = ['log-1','log-2','log-3','log-4','log-5','log-6','log-7'];
+    for (let i = 0; i < logs.length; i++) {
+      await delay(500 + i * 350);
+      document.getElementById(logs[i]).classList.add('visible');
+    }
+    await delay(600);
+
+    wrappedData = {
+      trait: 'PAPER HANDS',
+      narrative: 'You have a rare gift: the ability to sell exactly before every pump and buy exactly before every dump. Scientists are studying you.',
+      stats: {
+        transactions: 312,
+        volume: '4.2 ETH',
+        since: 'Jan 2024',
+        gas: '0.18 MNT',
+        topProtocol: 'Uniswap',
+        uniqueContracts: 47
+      },
+      prediction: 'In 2026 you will finally buy a token at the bottom — and then immediately sell it 4 hours before it 10x\'s.',
+      roast: '312 transactions. Negative PnL. You didn\'t just miss the bull run — you paid gas fees to watch it happen from the sidelines. Your portfolio is a crime scene and you keep returning to the scene.'
+    };
+
+    populateResults(wrappedData);
+    showStep('step-results');
+  }
+
+  // ─── SHARE ───
+  function shareWrapped() {
+    if (!wrappedData) return;
+    const roastSnippet = wrappedData.roast.length > 200
+      ? wrappedData.roast.slice(0, 197) + '…'
+      : wrappedData.roast;
+    const text = `AI just roasted my wallet:\n\n"${roastSnippet}"\n\nI'm a ${wrappedData.trait} on Mantle. Get roasted 👇\nmantle-wrapped.xyz`;
+    const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
+    window.open(url, '_blank', 'noopener');
+  }
+
+  // ─── HELPERS ───
+  function delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  // ─── PARTICLES ───
+  (function spawnParticles() {
+    const container = document.getElementById('particles');
+    const count = 55;
+    for (let i = 0; i < count; i++) {
+      const p = document.createElement('span');
+      p.className = 'particle';
+      const size  = Math.random() * 2.5 + 0.8;
+      const left  = Math.random() * 100;
+      const top   = Math.random() * 100;
+      const dur   = Math.random() * 18 + 12;
+      const delay = Math.random() * 20;
+      const drift = ((Math.random() - 0.5) * 80).toFixed(1);
+      // alternate between green-tinted and near-white
+      const isGreen = Math.random() > 0.45;
+      const color = isGreen
+        ? `rgba(0,211,149,${(Math.random() * 0.45 + 0.25).toFixed(2)})`
+        : `rgba(255,255,255,${(Math.random() * 0.2 + 0.1).toFixed(2)})`;
+      p.style.cssText = `
+        width:${size}px; height:${size}px;
+        left:${left}%; top:${top}%;
+        background:${color};
+        animation-duration:${dur}s;
+        animation-delay:-${delay}s;
+        --drift:${drift}px;
+        ${size > 2.2 ? `box-shadow: 0 0 ${(size * 3).toFixed(0)}px ${color};` : ''}
+      `;
+      container.appendChild(p);
+    }
+  })();
+</script>
+
+<!-- HIDDEN NFT CAPTURE CARD -->
+<div id="nft-capture-wrap">
+  <div id="nft-capture">
+    <div class="nc-accent"></div>
+    <div class="nc-scanlines"></div>
+    <div class="nc-noise"></div>
+
+    <div class="nc-topbar">
+      <span class="nc-plabel">Mantle Wrapped · S1</span>
+      <span class="nc-logo">2026</span>
+    </div>
+
+    <div class="nc-archetype">
+      <div class="nc-arch-label">Your Archetype</div>
+      <div class="nc-trait" id="nc-trait">—</div>
+      <div class="nc-tier" id="nc-tier">—</div>
+    </div>
+
+    <div class="nc-roast-zone">
+      <div class="nc-roast-label">AI Verdict</div>
+      <div class="nc-roast-text" id="nc-roast">—</div>
+    </div>
+
+    <div class="nc-stats-strip">
+      <div class="nc-stat-cell">
+        <span class="nc-stat-label">Volume</span>
+        <span class="nc-stat-val" id="nc-volume">—</span>
+      </div>
+      <div class="nc-stat-cell">
+        <span class="nc-stat-label">Txns</span>
+        <span class="nc-stat-val" id="nc-txns">—</span>
+      </div>
+      <div class="nc-stat-cell">
+        <span class="nc-stat-label">Gas</span>
+        <span class="nc-stat-val" id="nc-gas">—</span>
+      </div>
+      <div class="nc-stat-cell">
+        <span class="nc-stat-label">Since</span>
+        <span class="nc-stat-val" id="nc-since">—</span>
+      </div>
+      <div class="nc-stat-cell">
+        <span class="nc-stat-label">Protocol</span>
+        <span class="nc-stat-val" id="nc-protocol">—</span>
+      </div>
+      <div class="nc-stat-cell">
+        <span class="nc-stat-label">Contracts</span>
+        <span class="nc-stat-val" id="nc-contracts">—</span>
+      </div>
+    </div>
+
+    <div class="nc-footer">
+      <span class="nc-wallet" id="nc-wallet">—</span>
+      <span class="nc-season">Mantle Wrapped</span>
+    </div>
+  </div>
+</div>
+
+<!-- ethers.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/ethers.umd.min.js"></script>
+<!-- html2canvas -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+</body>
+</html>
+

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NFT Capture Preview</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #111;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .nft-capture {
+    position: relative;
+    width: 500px; height: 500px;
+    overflow: hidden;
+    background: linear-gradient(160deg, #080f09 0%, #040804 60%, #060d06 100%);
+    font-family: 'DM Mono', monospace;
+    display: flex;
+    flex-direction: column;
+    border-radius: 14px;
+    box-shadow: 0 0 80px rgba(0,255,178,0.1), 0 40px 100px rgba(0,0,0,0.8);
+  }
+  .nc-accent {
+    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, transparent 0%, #00FFB2 50%, transparent 100%);
+    z-index: 9;
+  }
+  .nc-scanlines {
+    position: absolute; inset: 0; pointer-events: none; z-index: 8;
+    background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.04) 3px, rgba(0,0,0,0.04) 4px);
+  }
+  .nc-noise {
+    position: absolute; inset: 0; opacity: 0.025; z-index: 7;
+    background-image: radial-gradient(circle, white 0.5px, transparent 0.5px);
+    background-size: 6px 6px;
+  }
+  .nc-topbar {
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 17px 30px 15px;
+    border-bottom: 1px solid rgba(0,211,149,0.12);
+    position: relative; z-index: 5;
+  }
+  .nc-plabel {
+    font-size: 7px; letter-spacing: 0.35em;
+    color: rgba(0,211,149,0.5); text-transform: uppercase;
+  }
+  .nc-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 9px; letter-spacing: 0.2em; color: rgba(255,255,255,0.2);
+  }
+  .nc-archetype {
+    flex-shrink: 0;
+    padding: 19px 30px 16px;
+    position: relative; z-index: 5;
+    border-bottom: 1px solid rgba(0,211,149,0.1);
+  }
+  .nc-arch-label {
+    font-size: 6px; letter-spacing: 0.35em;
+    color: rgba(0,211,149,0.4); text-transform: uppercase; margin-bottom: 5px;
+  }
+  .nc-trait {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 62px; letter-spacing: 0.04em;
+    color: #00FFB2; line-height: 0.9;
+    text-shadow: 0 0 40px rgba(0,255,178,0.35), 0 0 100px rgba(0,211,149,0.12);
+  }
+  .nc-tier {
+    display: inline-block;
+    margin-top: 6px;
+    font-size: 6px; letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(0,211,149,0.5);
+    border: 1px solid rgba(0,211,149,0.2);
+    padding: 3px 6px;
+    border-radius: 2px;
+  }
+  .nc-roast-zone {
+    flex: 1;
+    padding: 20px 30px;
+    display: flex; flex-direction: column; justify-content: center;
+    position: relative; z-index: 5;
+    background: rgba(255,40,10,0.04);
+    overflow: hidden;
+  }
+  .nc-roast-zone::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0;
+    height: 1px; background: rgba(255,80,50,0.22);
+  }
+  .nc-roast-zone::after {
+    content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+    height: 1px; background: rgba(255,80,50,0.12);
+  }
+  .nc-roast-label {
+    font-size: 6px; letter-spacing: 0.4em;
+    color: rgba(255,100,60,0.55); text-transform: uppercase; margin-bottom: 12px;
+  }
+  .nc-roast-text {
+    font-size: 12.5px; color: rgba(255,255,255,0.92);
+    line-height: 1.72; font-style: italic;
+  }
+  .nc-stats-strip {
+    flex-shrink: 0;
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    position: relative; z-index: 5;
+    border-top: 1px solid rgba(0,211,149,0.12);
+  }
+  .nc-stat-cell {
+    padding: 11px 17px;
+    border-right: 1px solid rgba(0,211,149,0.08);
+    display: flex; flex-direction: column; gap: 3px;
+  }
+  .nc-stat-cell:nth-child(3) { border-right: none; }
+  .nc-stat-cell:nth-child(n+4) { border-top: 1px solid rgba(0,211,149,0.08); }
+  .nc-stat-cell:nth-child(6) { border-right: none; }
+  .nc-stat-label {
+    font-size: 5.5px; letter-spacing: 0.2em;
+    color: rgba(0,211,149,0.4); text-transform: uppercase;
+  }
+  .nc-stat-val {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14px; letter-spacing: 0.04em;
+    color: rgba(255,255,255,0.85); line-height: 1;
+  }
+  .nc-footer {
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 30px;
+    border-top: 1px solid rgba(0,211,149,0.1);
+    position: relative; z-index: 5;
+  }
+  .nc-wallet {
+    font-size: 7px; letter-spacing: 0.12em; color: rgba(255,255,255,0.18);
+  }
+  .nc-season {
+    font-size: 7px; letter-spacing: 0.12em; color: rgba(0,211,149,0.35);
+  }
+</style>
+</head>
+<body>
+<div class="nft-capture">
+  <div class="nc-accent"></div>
+  <div class="nc-scanlines"></div>
+  <div class="nc-noise"></div>
+
+  <div class="nc-topbar">
+    <span class="nc-plabel">Mantle Wrapped · S1</span>
+    <span class="nc-logo">2026</span>
+  </div>
+
+  <div class="nc-archetype">
+    <div class="nc-arch-label">Your Archetype</div>
+    <div class="nc-trait">Paper Hands</div>
+    <div class="nc-tier">Chronic Onchainer</div>
+  </div>
+
+  <div class="nc-roast-zone">
+    <div class="nc-roast-label">AI Verdict</div>
+    <div class="nc-roast-text">312 transactions. Negative PnL. You didn't just miss the bull run — you paid gas fees to watch it happen from the sidelines. Your portfolio is a crime scene and you keep returning to the scene.</div>
+  </div>
+
+  <div class="nc-stats-strip">
+    <div class="nc-stat-cell">
+      <span class="nc-stat-label">Volume</span>
+      <span class="nc-stat-val">4.2 ETH</span>
+    </div>
+    <div class="nc-stat-cell">
+      <span class="nc-stat-label">Txns</span>
+      <span class="nc-stat-val">312</span>
+    </div>
+    <div class="nc-stat-cell">
+      <span class="nc-stat-label">Gas</span>
+      <span class="nc-stat-val">0.18 MNT</span>
+    </div>
+    <div class="nc-stat-cell">
+      <span class="nc-stat-label">Since</span>
+      <span class="nc-stat-val">Jan 2024</span>
+    </div>
+    <div class="nc-stat-cell">
+      <span class="nc-stat-label">Protocol</span>
+      <span class="nc-stat-val">Uniswap</span>
+    </div>
+    <div class="nc-stat-cell">
+      <span class="nc-stat-label">Contracts</span>
+      <span class="nc-stat-val">47</span>
+    </div>
+  </div>
+
+  <div class="nc-footer">
+    <span class="nc-wallet">0x3f9a...d12c</span>
+    <span class="nc-season">Mantle Wrapped</span>
+  </div>
+</div>
+</body>
+</html>

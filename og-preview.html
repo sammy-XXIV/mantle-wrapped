@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #0a0a0a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .og-card {
+    width: 1200px;
+    height: 630px;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, #060d07 0%, #040804 50%, #080f09 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  /* top accent */
+  .og-accent {
+    position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, transparent 0%, #00FFB2 40%, #00D395 60%, transparent 100%);
+  }
+
+  /* scan lines */
+  .og-scanlines {
+    position: absolute; inset: 0; pointer-events: none;
+    background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.03) 3px, rgba(0,0,0,0.03) 4px);
+  }
+
+  /* radial glow top-left */
+  .og-glow {
+    position: absolute;
+    top: -120px; left: -80px;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,211,149,0.09) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  /* grid lines */
+  .og-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(0,211,149,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,211,149,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+
+  /* left content */
+  .og-body {
+    position: relative; z-index: 5;
+    display: flex;
+    align-items: stretch;
+    height: 100%;
+  }
+
+  .og-left {
+    flex: 1;
+    padding: 56px 64px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .og-label {
+    font-size: 13px;
+    letter-spacing: 0.4em;
+    color: rgba(0,211,149,0.5);
+    text-transform: uppercase;
+  }
+
+  .og-main {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .og-eyebrow {
+    font-size: 13px;
+    letter-spacing: 0.3em;
+    color: rgba(255,100,60,0.7);
+    text-transform: uppercase;
+  }
+
+  .og-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 108px;
+    letter-spacing: 0.03em;
+    color: #00FFB2;
+    line-height: 0.88;
+    text-shadow: 0 0 60px rgba(0,255,178,0.3), 0 0 120px rgba(0,211,149,0.1);
+  }
+
+  .og-sub {
+    font-size: 17px;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.6;
+    max-width: 480px;
+    margin-top: 4px;
+  }
+
+  .og-url {
+    font-size: 13px;
+    letter-spacing: 0.15em;
+    color: rgba(0,211,149,0.4);
+  }
+
+  /* right: mock NFT card */
+  .og-right {
+    width: 320px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 40px 40px 0;
+    position: relative; z-index: 5;
+  }
+
+  .og-mock-card {
+    width: 240px;
+    height: 300px;
+    border-radius: 10px;
+    border: 1px solid rgba(0,211,149,0.2);
+    background: linear-gradient(160deg, #0a1409 0%, #050904 60%, #080e07 100%);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 0 40px rgba(0,255,178,0.08), 0 24px 60px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.06);
+    transform: rotate(3deg);
+  }
+
+  .omc-accent {
+    height: 1.5px;
+    background: linear-gradient(90deg, transparent, #00FFB2, transparent);
+    flex-shrink: 0;
+  }
+
+  .omc-top {
+    flex-shrink: 0;
+    padding: 10px 14px 8px;
+    border-bottom: 1px solid rgba(0,211,149,0.1);
+    display: flex;
+    justify-content: space-between;
+  }
+  .omc-label {
+    font-size: 5px; letter-spacing: 0.3em;
+    color: rgba(0,211,149,0.45); text-transform: uppercase;
+  }
+
+  .omc-trait-block {
+    flex-shrink: 0;
+    padding: 10px 14px 8px;
+    border-bottom: 1px solid rgba(0,211,149,0.08);
+  }
+  .omc-arch-label {
+    font-size: 5px; letter-spacing: 0.3em;
+    color: rgba(0,211,149,0.35); text-transform: uppercase; margin-bottom: 4px;
+  }
+  .omc-trait {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 34px; letter-spacing: 0.04em;
+    color: #00FFB2; line-height: 0.9;
+    text-shadow: 0 0 20px rgba(0,255,178,0.4);
+  }
+  .omc-tier {
+    display: inline-block;
+    margin-top: 4px;
+    font-size: 4px; letter-spacing: 0.25em;
+    color: rgba(0,211,149,0.45);
+    border: 1px solid rgba(0,211,149,0.18);
+    padding: 2px 5px; border-radius: 1px;
+    text-transform: uppercase;
+  }
+
+  .omc-roast {
+    flex: 1;
+    padding: 10px 14px;
+    display: flex; flex-direction: column; justify-content: center;
+    background: rgba(255,40,10,0.04);
+    border-bottom: 1px solid rgba(0,211,149,0.08);
+  }
+  .omc-roast-label {
+    font-size: 4px; letter-spacing: 0.35em;
+    color: rgba(255,100,60,0.5); text-transform: uppercase; margin-bottom: 6px;
+  }
+  .omc-roast-text {
+    font-size: 6.5px; color: rgba(255,255,255,0.88);
+    line-height: 1.7; font-style: italic;
+  }
+
+  .omc-stats {
+    flex-shrink: 0;
+    display: grid; grid-template-columns: repeat(3,1fr);
+  }
+  .omc-stat {
+    padding: 6px 8px;
+    border-right: 1px solid rgba(0,211,149,0.07);
+    display: flex; flex-direction: column; gap: 2px;
+  }
+  .omc-stat:nth-child(3) { border-right: none; }
+  .omc-stat:nth-child(n+4) { border-top: 1px solid rgba(0,211,149,0.07); }
+  .omc-stat:nth-child(6) { border-right: none; }
+  .omc-stat-label { font-size: 4px; letter-spacing: 0.18em; color: rgba(0,211,149,0.35); text-transform: uppercase; }
+  .omc-stat-val { font-family: 'Bebas Neue', sans-serif; font-size: 10px; color: rgba(255,255,255,0.8); line-height: 1; }
+
+  .omc-footer {
+    flex-shrink: 0;
+    padding: 6px 14px;
+    border-top: 1px solid rgba(0,211,149,0.08);
+    display: flex; justify-content: space-between;
+  }
+  .omc-wallet { font-size: 4.5px; letter-spacing: 0.1em; color: rgba(255,255,255,0.15); }
+  .omc-season { font-size: 4.5px; letter-spacing: 0.1em; color: rgba(0,211,149,0.3); }
+
+  /* divider */
+  .og-divider {
+    position: absolute;
+    top: 60px; bottom: 60px;
+    right: 320px;
+    width: 1px;
+    background: linear-gradient(180deg, transparent, rgba(0,211,149,0.15) 30%, rgba(0,211,149,0.15) 70%, transparent);
+    z-index: 5;
+  }
+</style>
+</head>
+<body>
+<div class="og-card">
+  <div class="og-accent"></div>
+  <div class="og-scanlines"></div>
+  <div class="og-glow"></div>
+  <div class="og-grid"></div>
+  <div class="og-divider"></div>
+
+  <div class="og-body">
+    <div class="og-left">
+      <div class="og-label">Mantle Wrapped · Season 1</div>
+
+      <div class="og-main">
+        <div class="og-eyebrow">AI just roasted my wallet</div>
+        <div class="og-title">GET<br>ROASTED</div>
+        <div class="og-sub">Connect your Mantle wallet. AI analyzes your worst trades and publicly destroys you. Mint the evidence.</div>
+      </div>
+
+      <div class="og-url">mantle-wrapped.xyz</div>
+    </div>
+
+    <div class="og-right">
+      <div class="og-mock-card">
+        <div class="omc-accent"></div>
+        <div class="omc-top">
+          <span class="omc-label">Mantle Wrapped · S1</span>
+          <span class="omc-label">2026</span>
+        </div>
+        <div class="omc-trait-block">
+          <div class="omc-arch-label">Your Archetype</div>
+          <div class="omc-trait">Paper Hands</div>
+          <div class="omc-tier">Chronic Onchainer</div>
+        </div>
+        <div class="omc-roast">
+          <div class="omc-roast-label">AI Verdict</div>
+          <div class="omc-roast-text">312 transactions. Negative PnL. You didn't just miss the bull run — you paid gas fees to watch it happen from the sidelines.</div>
+        </div>
+        <div class="omc-stats">
+          <div class="omc-stat"><span class="omc-stat-label">Volume</span><span class="omc-stat-val">4.2 ETH</span></div>
+          <div class="omc-stat"><span class="omc-stat-label">Txns</span><span class="omc-stat-val">312</span></div>
+          <div class="omc-stat"><span class="omc-stat-label">Gas</span><span class="omc-stat-val">0.18M</span></div>
+          <div class="omc-stat"><span class="omc-stat-label">Since</span><span class="omc-stat-val">Jan 24</span></div>
+          <div class="omc-stat"><span class="omc-stat-label">Protocol</span><span class="omc-stat-val">UNI</span></div>
+          <div class="omc-stat"><span class="omc-stat-label">Contracts</span><span class="omc-stat-val">47</span></div>
+        </div>
+        <div class="omc-footer">
+          <span class="omc-wallet">0x3f9a...d12c</span>
+          <span class="omc-season">Mantle Wrapped</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
