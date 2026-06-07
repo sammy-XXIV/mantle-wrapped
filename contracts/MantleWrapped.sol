@@ -5,7 +5,7 @@ pragma solidity ^0.8.20;
  * @title MantleWrapped
  * @notice Soulbound NFT for Mantle Wrapped Season 1.
  * Each wallet mints once. Non-transferable. AI-generated trait stored on-chain.
- * Deployed on Mantle Mainnet: 0xfaB1E40725b4411113C8D7614E4f774f5AFe08EC
+ * Deployed on Mantle Mainnet: 0xF2238eC479e64e8878e338b0bfD5B90E5AFd2502
  */
 contract MantleWrapped {
 
