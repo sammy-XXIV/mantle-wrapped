@@ -319,13 +319,3 @@ app.listen(PORT, () => {
   console.log(`mantle-wrapped backend running on port ${PORT}`);
 });
 
-// Keep-alive ping
-const BACKEND_URL = process.env.BACKEND_URL || 'https://mantle-wrapped-backend.onrender.com';
-setInterval(async () => {
-  try {
-    await fetch(`${BACKEND_URL}/`);
-    console.log('keep-alive ping sent');
-  } catch (err) {
-    console.error('keep-alive failed:', err.message);
-  }
-}, 14 * 60 * 1000);
