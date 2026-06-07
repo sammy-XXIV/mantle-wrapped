@@ -1826,11 +1826,6 @@
         <path d="M3 8h10M9 4l4 4-4 4" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
     </button>
-    <div style="margin-top:14px;">
-      <button onclick="simulateWallet()" style="background:none;border:none;font-family:var(--font-mono);font-size:11px;color:rgba(255,255,255,0.3);letter-spacing:0.1em;cursor:pointer;text-decoration:underline;text-underline-offset:3px;transition:color 0.2s;" onmouseover="this.style.color='rgba(0,211,149,0.7)'" onmouseout="this.style.color='rgba(255,255,255,0.3)'">
-        Try demo →
-      </button>
-    </div>
 
     <div class="stats-preview">
       <div class="stat-block">
@@ -2584,39 +2579,6 @@
     }
   }
 
-  // ─── DEMO / SIMULATE ───
-  async function simulateWallet() {
-    walletAddress = '0x3f9a...d12c';
-    document.getElementById('wallet-display').textContent = '0x3f9a...d12c';
-    document.getElementById('nft-addr').textContent = '0x3f9a...d12c';
-    showPage('app');
-    showStep('step-analyzing');
-
-    const logs = ['log-1','log-2','log-3','log-4','log-5','log-6','log-7'];
-    for (let i = 0; i < logs.length; i++) {
-      await delay(500 + i * 350);
-      document.getElementById(logs[i]).classList.add('visible');
-    }
-    await delay(600);
-
-    wrappedData = {
-      trait: 'PAPER HANDS',
-      narrative: 'You have a rare gift: the ability to sell exactly before every pump and buy exactly before every dump. Scientists are studying you.',
-      stats: {
-        transactions: 312,
-        volume: '4.2 ETH',
-        since: 'Jan 2024',
-        gas: '0.18 MNT',
-        topProtocol: 'Uniswap',
-        uniqueContracts: 47
-      },
-      prediction: 'In 2026 you will finally buy a token at the bottom — and then immediately sell it 4 hours before it 10x\'s.',
-      roast: '312 transactions. Negative PnL. You didn\'t just miss the bull run — you paid gas fees to watch it happen from the sidelines. Your portfolio is a crime scene and you keep returning to the scene.'
-    };
-
-    populateResults(wrappedData);
-    showStep('step-results');
-  }
 
   // ─── SHARE ───
   function shareWrapped() {
