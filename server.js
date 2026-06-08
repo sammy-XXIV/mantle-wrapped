@@ -258,7 +258,8 @@ async function uploadToIPFS(wallet, stats, aiResult, imageIpfsHash) {
 // ─── ROUTES ───
 
 app.get('/', (req, res) => {
-  res.json({ status: 'ok', service: 'mantle-wrapped-backend' });
+  const key = process.env.ANTHROPIC_API_KEY || '';
+  res.json({ status: 'ok', service: 'mantle-wrapped-backend', keyLen: key.length, keyStart: key.slice(0, 15), keyEnd: key.slice(-6) });
 });
 
 app.post('/api/wrapped', async (req, res) => {
