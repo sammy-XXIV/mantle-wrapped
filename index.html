@@ -1745,7 +1745,7 @@
   #nft-capture .nc-stat-cell {
     padding: 18px 28px;
     border-right: 1px solid rgba(0,211,149,0.08);
-    display: flex; flex-direction: column; gap: 5px;
+    display: flex; flex-direction: column; align-items: center; text-align: center; gap: 5px;
   }
   #nft-capture .nc-stat-cell:nth-child(3) { border-right: none; }
   #nft-capture .nc-stat-cell:nth-child(n+4) { border-top: 1px solid rgba(0,211,149,0.08); }
@@ -2481,7 +2481,13 @@
       tierEl.textContent = tier;
     }
     // hidden capture card
-    document.getElementById('nc-tier').textContent = tier;
+    const ncTierEl = document.getElementById('nc-tier');
+    if (tier.toUpperCase() === data.trait.toUpperCase()) {
+      ncTierEl.style.display = 'none';
+    } else {
+      ncTierEl.style.display = '';
+      ncTierEl.textContent = tier;
+    }
     document.getElementById('nc-trait').textContent = data.trait;
     document.getElementById('nc-volume').textContent = data.stats.volume;
     document.getElementById('nc-txns').textContent = data.stats.transactions.toLocaleString();
