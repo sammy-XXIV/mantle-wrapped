@@ -1,14 +1,11 @@
 const express = require('express');
 const cors = require('cors');
-const Anthropic = require('@anthropic-ai/sdk');
 const fs = require('fs');
 const path = require('path');
 
 const app = express();
 app.use(cors());
 app.use(express.json({ limit: '10mb' }));
-
-const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
 const MANTLE_EXPLORER = 'https://api.etherscan.io/v2/api';
 const MANTLE_EXPLORER_KEY = process.env.MANTLE_EXPLORER_KEY || '';
@@ -149,13 +146,27 @@ Rules:
 - Roast must reference actual numbers from their stats
 - Return only valid JSON, nothing else`;
 
-  const response = await anthropic.messages.create({
-    model: 'claude-sonnet-4-6',
-    max_tokens: 500,
-    messages: [{ role: 'user', content: prompt }]
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'x-api-key': process.env.ANTHROPIC_API_KEY,
+      'anthropic-version': '2023-06-01',
+      'content-type': 'application/json'
+    },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-6',
+      max_tokens: 500,
+      messages: [{ role: 'user', content: prompt }]
+    })
   });
 
-  const text = response.content[0].text.trim();
+  if (!res.ok) {
+    const err = await res.text();
+    throw new Error(`Anthropic API error ${res.status}: ${err}`);
+  }
+
+  const data = await res.json();
+  const text = data.content[0].text.trim();
   try {
     const clean = text.replace(/```json|```/g, '').trim();
     return JSON.parse(clean);
