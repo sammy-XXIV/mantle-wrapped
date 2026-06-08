@@ -916,7 +916,7 @@
   }
   .nft-cv-tier {
     display: inline-block;
-    margin-top: 6%;
+    margin-top: 4%;
     font-family: 'DM Mono', monospace;
     font-size: clamp(7px, 1.1vmin, 9px);
     letter-spacing: 0.3em;
@@ -929,7 +929,7 @@
 
   .nft-cv-trait-val {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(36px, 8vmin, 62px);
+    font-size: clamp(28px, 6.5vmin, 52px);
     letter-spacing: 0.05em;
     color: #00FFB2;
     line-height: 0.9;
@@ -941,7 +941,7 @@
   /* ROAST — center hero */
   .nft-cv-roast-block {
     flex: 1;
-    padding: 5% 6%;
+    padding: 4% 6%;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -954,13 +954,13 @@
     letter-spacing: 0.35em;
     color: rgba(255,255,255,0.2);
     text-transform: uppercase;
-    margin-bottom: 3%;
+    margin-bottom: 2%;
   }
   .nft-cv-roast-text {
     font-family: 'DM Mono', monospace;
-    font-size: clamp(10px, 2vmin, 14px);
+    font-size: clamp(9px, 1.7vmin, 13px);
     color: rgba(255,255,255,0.9) !important;
-    line-height: 1.75;
+    line-height: 1.65;
     font-style: italic;
     overflow: hidden;
     display: -webkit-box;
@@ -976,11 +976,11 @@
     border-top: 1px solid rgba(0,211,149,0.12);
   }
   .nft-cv-stat-cell {
-    padding: 3% 5%;
+    padding: 4% 5%;
     border-right: 1px solid rgba(0,211,149,0.08);
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 3px;
   }
   .nft-cv-stat-cell:nth-child(3),
   .nft-cv-stat-cell:last-child { border-right: none; }
@@ -991,14 +991,14 @@
   }
   .nft-cv-stat-cell-label {
     font-family: 'DM Mono', monospace;
-    font-size: clamp(5px, 0.72vmin, 7px);
-    letter-spacing: 0.18em;
+    font-size: clamp(6px, 0.85vmin, 8px);
+    letter-spacing: 0.15em;
     color: rgba(0,211,149,0.4);
     text-transform: uppercase;
   }
   .nft-cv-stat-cell-val {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(11px, 1.7vmin, 14px);
+    font-size: clamp(13px, 2vmin, 16px);
     letter-spacing: 0.04em;
     color: rgba(255,255,255,0.85);
     line-height: 1;
@@ -2475,8 +2475,14 @@
     document.getElementById('nft-addr').textContent = shortAddr(walletAddress);
     document.getElementById('nft-id').textContent = nftId;
 
-    // visible nft card tier
-    document.getElementById('nft-tier').textContent = tier;
+    // visible nft card tier — hide if same as trait
+    const tierEl = document.getElementById('nft-tier');
+    if (tier.toUpperCase() === data.trait.toUpperCase()) {
+      tierEl.style.display = 'none';
+    } else {
+      tierEl.style.display = '';
+      tierEl.textContent = tier;
+    }
     // hidden capture card
     document.getElementById('nc-tier').textContent = tier;
     document.getElementById('nc-trait').textContent = data.trait;
